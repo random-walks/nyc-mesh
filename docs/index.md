@@ -1,10 +1,25 @@
 # nyc-mesh
 
-`nyc-mesh` is a Python-first toolkit for turning NYC open 3D source data into outputs that are practical for web visualization and spatial analysis.
+`nyc-mesh` is a Python-first toolkit for turning NYC open 3D source data into
+outputs that are practical for web visualization and spatial analysis.
 
-The project is starting from a clean package scaffold so the repository can grow in public with stable packaging, CI, documentation, and release hygiene from the beginning.
+The project started from a clean package scaffold so the repository can grow in
+public with stable packaging, CI, documentation, and release hygiene from the
+beginning.
 
-This docs site now includes two exact source documents imported from the showcase planning repo:
+The current v0.1 state now includes one real happy path:
+
+- load local CityGML
+- extract footprints + measured heights
+- reproject EPSG:2263 to EPSG:4326
+- clip by WGS84 bounding box
+- export height-aware GeoJSON
+
+Everything else remains scaffolded with explicit `NotImplementedError`
+placeholders.
+
+This docs site now includes two exact source documents imported from the
+showcase planning repo:
 
 - the original `nyc-mesh` seed spec
 - the gap explanation for why this is still a real OSS opportunity

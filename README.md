@@ -5,19 +5,29 @@
 [![PyPI version][pypi-version]][pypi-link]
 [![PyPI platforms][pypi-platforms]][pypi-link]
 
-Python toolkit for converting NYC open CityGML buildings and LiDAR terrain into web-ready 3D geodata.
+Python toolkit for converting NYC open CityGML buildings and LiDAR terrain into
+web-ready 3D geodata.
 
 ## Status
 
-This repository is intentionally scaffolded early and now includes the exact seed docs that define the product target.
+`nyc-mesh` has moved from pure scaffold to a small v0.1 foundation.
 
-- The packaging, docs, CI, and release plumbing are in place.
-- The implementation is still in the planning and seeding phase.
-- The target API surface is scaffolded with typed placeholders that raise `NotImplementedError`.
+- Packaging, docs, CI, and release plumbing are in place.
+- The first end-to-end happy path is implemented:
+  - load one local CityGML file
+  - extract footprint + measured height
+  - reproject EPSG:2263 coordinates to EPSG:4326
+  - clip by WGS84 bounding box
+  - export height-aware GeoJSON
+- Remaining planned features stay explicit as typed placeholders that raise
+  `NotImplementedError`.
 
 ## Why This Exists
 
-NYC publishes unusually rich 3D geospatial data, but the raw assets are hard to use in practice. The source files are large, specialized, and awkward to move into browser-friendly formats. `nyc-mesh` is meant to close that gap for planners, civic hackers, researchers, journalists, and students.
+NYC publishes unusually rich 3D geospatial data, but the raw assets are hard to
+use in practice. The source files are large, specialized, and awkward to move
+into browser-friendly formats. `nyc-mesh` is meant to close that gap for
+planners, civic hackers, researchers, journalists, and students.
 
 The goal is to make the first useful workflow feel like:
 
@@ -25,7 +35,29 @@ The goal is to make the first useful workflow feel like:
 2. Clip to a neighborhood or bounding box.
 3. Export web-friendly outputs for mapping, rendering, or analysis.
 
-## Planned Outputs
+## Implemented v0.1 Happy Path
+
+```python
+from pathlib import Path
+
+from nyc_mesh import BoundingBox, ExportTarget
+from nyc_mesh import clip_to_bbox, export_geojson, extract_buildings, load_citygml
+
+dataset = load_citygml(Path("sample.gml"))
+buildings = extract_buildings(dataset)
+clipped = clip_to_bbox(
+    buildings,
+    BoundingBox(min_lat=40.70, min_lon=-74.02, max_lat=40.72, max_lon=-73.99),
+)
+export_geojson(
+    clipped, ExportTarget(format="geojson", output_path=Path("buildings.geojson"))
+)
+```
+
+This is intentionally narrow and designed to be reproducible before broader
+format coverage lands.
+
+## Planned Outputs (Not Yet Implemented)
 
 - GeoJSON with building heights for deck.gl and Mapbox workflows
 - 3D Tiles for Cesium-style viewers
@@ -35,27 +67,43 @@ The goal is to make the first useful workflow feel like:
 ## Seeded Sources Of Truth
 
 - `docs/notes/original-spec.md`: exact copied seed spec for `nyc-mesh`
-- `docs/notes/gap-explination.md`: exact copied gap analysis that explains why this project is still worth building
+- `docs/notes/gap-explination.md`: exact copied gap analysis that explains why
+  this project is still worth building
 - `docs/agent-kickoff-todo.md`: kickoff plan for follow-on implementation agents
 - `docs/agent-handoff-prompt.md`: paste-ready prompt for the next agent session
 
 ## Initial Scope
 
-- CityGML loader for NYC building data
-- Footprint and height extraction
-- EPSG:2263 to EPSG:4326 reprojection
-- Bounding-box clipping
+- CityGML loader for NYC building data (implemented for local files)
+- Footprint and height extraction (implemented)
+- EPSG:2263 to EPSG:4326 reprojection (implemented)
+- Bounding-box clipping (implemented)
 - Example notebook for rendering one neighborhood in 3D
 
 ## Scaffolded Package Surface
 
-The package now exposes planned-but-unimplemented modules so contributors can see the intended shape before building:
+The package exposes a typed surface where implemented and planned areas are both
+clear:
 
 - `nyc_mesh.loaders`
 - `nyc_mesh.processors`
 - `nyc_mesh.exporters`
 - `nyc_mesh.models`
 - `nyc_mesh.cli`
+
+Implemented today:
+
+- `load_citygml`
+- `extract_buildings`
+- `clip_to_bbox`
+- `export_geojson`
+
+Still planned (`NotImplementedError`):
+
+- `load_lidar`, `load_dem`, `load_footprints`
+- `join_pluto`, `generate_terrain_mesh`
+- `export_3d_tiles`, `export_geoparquet`, `export_gltf`
+- CLI command execution
 
 ## Development
 
