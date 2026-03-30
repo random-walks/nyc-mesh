@@ -58,6 +58,34 @@ export_geojson(
 This is intentionally narrow and designed to be reproducible before broader
 format coverage lands.
 
+## Python SDK Convenience Helpers
+
+For notebook, ETL, and data-science-style pipelines, the same workflow is also
+available through two higher-level helpers:
+
+```python
+from pathlib import Path
+
+from nyc_mesh import BoundingBox, export_citygml_geojson, extract_citygml_buildings
+
+bbox = BoundingBox(min_lat=40.70, min_lon=-74.02, max_lat=40.72, max_lon=-73.99)
+
+features = extract_citygml_buildings(Path("sample.gml"), bbox=bbox)
+output_path = export_citygml_geojson(
+    Path("sample.gml"),
+    Path("buildings.geojson"),
+    bbox=bbox,
+)
+```
+
+These helpers stay intentionally honest about the current v0.1 limits:
+
+- local CityGML files only
+- only buildings with `bldg:measuredHeight`
+- source coordinates assumed to be `EPSG:2263`
+- output reprojected to `EPSG:4326`
+- optional bbox clipping in WGS84
+
 ## CLI
 
 The installed `nyc-mesh` command now exposes the same implemented v0.1 flow:
@@ -138,6 +166,8 @@ Implemented today:
 - `extract_buildings`
 - `clip_to_bbox`
 - `export_geojson`
+- `extract_citygml_buildings`
+- `export_citygml_geojson`
 - `nyc-mesh export-geojson`
 
 Still planned (`NotImplementedError`):

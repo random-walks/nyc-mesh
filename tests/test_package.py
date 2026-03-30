@@ -9,6 +9,7 @@ import pytest
 import nyc_mesh as m
 from nyc_mesh.models import (
     BoundingBox,
+    BuildingFeature,
     CityGMLDataset,
     ExportTarget,
     NeighborhoodRequest,
@@ -160,7 +161,53 @@ def test_citygml_happy_path_to_geojson(tmp_path: Path) -> None:
     assert len(first["geometry"]["coordinates"][0]) >= 4
 
 
-def test_cli_export_geojson_with_bbox(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+def test_sdk_extract_citygml_buildings_with_bbox(tmp_path: Path) -> None:
+    source_path = tmp_path / "sample.gml"
+    _write_fixture_citygml(source_path)
+
+    extracted = m.extract_citygml_buildings(
+        source_path,
+        bbox=BoundingBox(
+            min_lat=40.687,
+            min_lon=-74.03,
+            max_lat=40.705,
+            max_lon=-74.0,
+        ),
+    )
+
+    assert extracted == (
+        BuildingFeature(
+            building_id="building-inside",
+            footprint_4326=extracted[0].footprint_4326,
+            height=25.5,
+        ),
+    )
+
+
+def test_sdk_export_citygml_geojson(tmp_path: Path) -> None:
+    source_path = tmp_path / "sample.gml"
+    output_path = tmp_path / "sdk-buildings.geojson"
+    _write_fixture_citygml(source_path)
+
+    resolved = m.export_citygml_geojson(
+        source_path,
+        output_path,
+        bbox=BoundingBox(
+            min_lat=40.687,
+            min_lon=-74.03,
+            max_lat=40.705,
+            max_lon=-74.0,
+        ),
+    )
+
+    payload = json.loads(resolved.read_text(encoding="utf-8"))
+    assert resolved == output_path.resolve()
+    assert [feature["id"] for feature in payload["features"]] == ["building-inside"]
+
+
+def test_cli_export_geojson_with_bbox(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     source_path = tmp_path / "sample.gml"
     output_path = tmp_path / "buildings.geojson"
     _write_fixture_citygml(source_path)

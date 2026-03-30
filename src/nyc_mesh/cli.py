@@ -4,16 +4,16 @@ from __future__ import annotations
 
 import argparse
 import sys
-from collections.abc import Callable, Sequence
 from pathlib import Path
-from typing import TextIO, cast
+from typing import TYPE_CHECKING, TextIO, cast
 
 from lxml import etree
 
-from .exporters import export_geojson
-from .loaders import load_citygml
-from .models import BoundingBox, ExportTarget
-from .processors import clip_to_bbox, extract_buildings
+from .models import BoundingBox
+from .sdk import export_citygml_geojson, extract_citygml_buildings
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Sequence
 
 try:
     from ._version import version as _VERSION
@@ -64,10 +64,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--input",
         type=Path,
         required=True,
-        help=(
-            "Path to a local CityGML file. Remote URLs are not supported in "
-            "v0.1."
-        ),
+        help="Path to a local CityGML file. Remote URLs are not supported in v0.1.",
     )
     export_geojson_parser.add_argument(
         "--output",
@@ -132,17 +129,12 @@ def _build_bbox(args: argparse.Namespace) -> BoundingBox | None:
 
 
 def _run_export_geojson(args: argparse.Namespace) -> int:
-    dataset = load_citygml(args.input)
-    buildings = extract_buildings(dataset)
     bbox = _build_bbox(args)
-    clipped = clip_to_bbox(buildings, bbox) if bbox is not None else buildings
-    output_path = export_geojson(
-        clipped,
-        ExportTarget(format="geojson", output_path=args.output),
-    )
+    buildings = extract_citygml_buildings(args.input, bbox=bbox)
+    output_path = export_citygml_geojson(args.input, args.output, bbox=bbox)
     _write_line(
         sys.stdout,
-        f"Exported {len(clipped)} height-aware building feature(s) to {output_path}",
+        f"Exported {len(buildings)} height-aware building feature(s) to {output_path}",
     )
     return 0
 
@@ -155,7 +147,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         handler = cast("Callable[[argparse.Namespace], int]", args.handler)
         return handler(args)
     except SystemExit as exc:
-        return int(exc.code)
+        return exc.code if isinstance(exc.code, int) else 1
     except (etree.XMLSyntaxError, FileNotFoundError, OSError, ValueError) as exc:
         _write_line(sys.stderr, f"nyc-mesh: error: {exc}")
         return 1
