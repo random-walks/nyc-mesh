@@ -4,6 +4,11 @@
 
 The project is starting from a clean package scaffold so the repository can grow in public with stable packaging, CI, documentation, and release hygiene from the beginning.
 
+This docs site now includes two exact source documents imported from the showcase planning repo:
+
+- the original `nyc-mesh` seed spec
+- the gap explanation for why this is still a real OSS opportunity
+
 ## Project Focus
 
 - Keep the dependency stack lightweight for a geospatial workflow
@@ -16,4 +21,7 @@ The project is starting from a clean package scaffold so the repository can grow
 - [Project brief](project-brief.md)
 - [Data sources](data-sources.md)
 - [MVP roadmap](mvp-roadmap.md)
+- [Agent kickoff TODO](agent-kickoff-todo.md)
+- [Agent handoff prompt](agent-handoff-prompt.md)
 - [Original seed spec](notes/original-spec.md)
+- [Gap explination](notes/gap-explination.md)

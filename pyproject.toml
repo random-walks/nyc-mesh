@@ -32,6 +32,9 @@ classifiers = [
 dynamic = ["version"]
 dependencies = []
 
+[project.scripts]
+nyc-mesh = "nyc_mesh.cli:main"
+
 [project.urls]
 Homepage = "https://github.com/random-walks/nyc-mesh"
 "Bug Tracker" = "https://github.com/random-walks/nyc-mesh/issues"

@@ -1,10 +1,34 @@
-"""Copyright (c) 2026 random-walks. All rights reserved.
+"""Top-level package for the planned ``nyc-mesh`` API surface.
 
-nyc-mesh: Python toolkit for converting NYC CityGML and LiDAR into web-ready 3D geodata.
+The repository is intentionally seeded with typed placeholders so contributors
+can see the target shape of the library before the implementation lands.
 """
 
 from __future__ import annotations
 
 from ._version import version as __version__
+from .cli import main
+from .exporters import export_3d_tiles, export_geojson, export_geoparquet, export_gltf
+from .loaders import load_citygml, load_dem, load_footprints, load_lidar
+from .models import BoundingBox, ExportTarget, NeighborhoodRequest
+from .processors import clip_to_bbox, extract_buildings, generate_terrain_mesh, join_pluto
 
-__all__ = ["__version__"]
+__all__ = [
+    "BoundingBox",
+    "ExportTarget",
+    "NeighborhoodRequest",
+    "__version__",
+    "clip_to_bbox",
+    "export_3d_tiles",
+    "export_geojson",
+    "export_geoparquet",
+    "export_gltf",
+    "extract_buildings",
+    "generate_terrain_mesh",
+    "join_pluto",
+    "load_citygml",
+    "load_dem",
+    "load_footprints",
+    "load_lidar",
+    "main",
+]

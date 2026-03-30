@@ -1,9 +1,25 @@
-# API status
+# API scaffold
 
-The public API is not implemented yet. This page will evolve once the first loaders, processors, and exporters land.
+The public API is intentionally scaffolded before implementation so the target surface is visible and importable.
 
-The expected first stable surfaces are:
+Every callable below currently raises `NotImplementedError` until the real implementation lands.
 
-- data loading for NYC CityGML and related source assets
-- geometry extraction and reprojection helpers
-- clipping and export functions for neighborhood-scale outputs
+## Models
+
+::: nyc_mesh.models
+
+## Loaders
+
+::: nyc_mesh.loaders
+
+## Processors
+
+::: nyc_mesh.processors
+
+## Exporters
+
+::: nyc_mesh.exporters
+
+## CLI
+
+::: nyc_mesh.cli

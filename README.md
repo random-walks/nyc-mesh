@@ -9,11 +9,11 @@ Python toolkit for converting NYC open CityGML buildings and LiDAR terrain into 
 
 ## Status
 
-This repository is intentionally scaffolded early.
+This repository is intentionally scaffolded early and now includes the exact seed docs that define the product target.
 
 - The packaging, docs, CI, and release plumbing are in place.
 - The implementation is still in the planning and seeding phase.
-- There is not yet a stable public API.
+- The target API surface is scaffolded with typed placeholders that raise `NotImplementedError`.
 
 ## Why This Exists
 
@@ -32,6 +32,13 @@ The goal is to make the first useful workflow feel like:
 - GeoParquet for analytics pipelines
 - glTF for lightweight 3D visualization
 
+## Seeded Sources Of Truth
+
+- `docs/notes/original-spec.md`: exact copied seed spec for `nyc-mesh`
+- `docs/notes/gap-explination.md`: exact copied gap analysis that explains why this project is still worth building
+- `docs/agent-kickoff-todo.md`: kickoff plan for follow-on implementation agents
+- `docs/agent-handoff-prompt.md`: paste-ready prompt for the next agent session
+
 ## Initial Scope
 
 - CityGML loader for NYC building data
@@ -40,12 +47,15 @@ The goal is to make the first useful workflow feel like:
 - Bounding-box clipping
 - Example notebook for rendering one neighborhood in 3D
 
-## Documentation
+## Scaffolded Package Surface
 
-- `docs/project-brief.md`: who this is for and how the package should be positioned
-- `docs/data-sources.md`: initial NYC datasets and provenance notes
-- `docs/mvp-roadmap.md`: v0.1 scope and stretch goals
-- `docs/notes/original-spec.md`: preserved seed thinking for the project
+The package now exposes planned-but-unimplemented modules so contributors can see the intended shape before building:
+
+- `nyc_mesh.loaders`
+- `nyc_mesh.processors`
+- `nyc_mesh.exporters`
+- `nyc_mesh.models`
+- `nyc_mesh.cli`
 
 ## Development
 
