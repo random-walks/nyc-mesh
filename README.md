@@ -58,6 +58,23 @@ export_geojson(
 This is intentionally narrow and designed to be reproducible before broader
 format coverage lands.
 
+## Notebook Walkthrough
+
+The repo now includes a first notebook walkthrough at
+`notebooks/dumbo-citygml-geojson-walkthrough.ipynb`.
+
+It is deliberately small and reproducible rather than download-heavy:
+
+- creates a tiny local CityGML fixture
+- clips to a DUMBO-like WGS84 bounding box
+- uses the shipped SDK helpers
+- exports a height-aware GeoJSON file
+- inspects the resulting feature payload
+
+This gives notebook and data-pipeline users a concrete example without
+pretending that LiDAR, terrain, or full-neighborhood production processing is
+already implemented.
+
 ## Python SDK Convenience Helpers
 
 For notebook, ETL, and data-science-style pipelines, the same workflow is also

@@ -8,7 +8,7 @@
 - Clip by bounding box
 - Export height-aware GeoJSON
 - Ship one real CLI command for the happy path
-- Ship one notebook that renders a recognizable NYC neighborhood in 3D
+- Ship one notebook walkthrough for a recognizable NYC neighborhood clip
 
 ## v0.1 Non-Goals
 

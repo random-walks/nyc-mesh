@@ -15,6 +15,7 @@ The current v0.1 state now includes one real happy path:
 - clip by WGS84 bounding box
 - export height-aware GeoJSON
 - run the same flow from the `nyc-mesh export-geojson` CLI
+- follow a notebook walkthrough for a DUMBO-scale example
 
 Everything else remains scaffolded with explicit `NotImplementedError`
 placeholders.
@@ -37,6 +38,7 @@ showcase planning repo:
 - [Project brief](project-brief.md)
 - [Data sources](data-sources.md)
 - [MVP roadmap](mvp-roadmap.md)
+- [Notebook walkthroughs](notebooks.md)
 - [Agent kickoff TODO](agent-kickoff-todo.md)
 - [Agent handoff prompt](agent-handoff-prompt.md)
 - [Original seed spec](notes/original-spec.md)
