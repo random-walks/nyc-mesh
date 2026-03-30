@@ -14,6 +14,7 @@ The current v0.1 state now includes one real happy path:
 - reproject EPSG:2263 to EPSG:4326
 - clip by WGS84 bounding box
 - export height-aware GeoJSON
+- run the same flow from the `nyc-mesh export-geojson` CLI
 
 Everything else remains scaffolded with explicit `NotImplementedError`
 placeholders.

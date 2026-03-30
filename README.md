@@ -19,6 +19,7 @@ web-ready 3D geodata.
   - reproject EPSG:2263 coordinates to EPSG:4326
   - clip by WGS84 bounding box
   - export height-aware GeoJSON
+- A matching CLI command now ships for that same narrow workflow.
 - Remaining planned features stay explicit as typed placeholders that raise
   `NotImplementedError`.
 
@@ -57,9 +58,49 @@ export_geojson(
 This is intentionally narrow and designed to be reproducible before broader
 format coverage lands.
 
-## Planned Outputs (Not Yet Implemented)
+## CLI
+
+The installed `nyc-mesh` command now exposes the same implemented v0.1 flow:
+
+```bash
+nyc-mesh export-geojson \
+  --input sample.gml \
+  --output buildings.geojson \
+  --min-lat 40.70 \
+  --min-lon -74.02 \
+  --max-lat 40.72 \
+  --max-lon -73.99
+```
+
+What this command does today:
+
+1. loads one local CityGML file
+2. extracts only buildings with `bldg:measuredHeight`
+3. assumes the source coordinates are NYC EPSG:2263
+4. reprojects those footprints to WGS84 (EPSG:4326)
+5. optionally clips them with a WGS84 bounding box
+6. writes a GeoJSON `FeatureCollection`
+
+The bounding box is optional. If you omit the four bbox flags, the command
+exports every extracted height-aware building from the input file.
+
+```bash
+nyc-mesh export-geojson --input sample.gml --output buildings.geojson
+```
+
+Validation is intentionally strict and narrow:
+
+- input must be a local file path
+- bbox clipping requires all four bbox flags together
+- `--min-lat < --max-lat`
+- `--min-lon < --max-lon`
+
+## Implemented Output
 
 - GeoJSON with building heights for deck.gl and Mapbox workflows
+
+## Planned Outputs (Not Yet Implemented)
+
 - 3D Tiles for Cesium-style viewers
 - GeoParquet for analytics pipelines
 - glTF for lightweight 3D visualization
@@ -97,13 +138,13 @@ Implemented today:
 - `extract_buildings`
 - `clip_to_bbox`
 - `export_geojson`
+- `nyc-mesh export-geojson`
 
 Still planned (`NotImplementedError`):
 
 - `load_lidar`, `load_dem`, `load_footprints`
 - `join_pluto`, `generate_terrain_mesh`
 - `export_3d_tiles`, `export_geoparquet`, `export_gltf`
-- CLI command execution
 
 ## Development
 

@@ -20,12 +20,29 @@ These implement the first narrow pipeline:
 4. clip to a WGS84 bounding box
 5. export GeoJSON
 
+The same path is now available through the installed CLI:
+
+```bash
+nyc-mesh export-geojson \
+  --input sample.gml \
+  --output buildings.geojson \
+  --min-lat 40.70 --min-lon -74.02 \
+  --max-lat 40.72 --max-lon -73.99
+```
+
+Notes:
+
+- `--input` must point to a local CityGML file.
+- The bbox is optional, but if used all four bbox flags are required.
+- The current v0.1 implementation assumes source coordinates are in
+  `EPSG:2263` and reprojects them to WGS84 (`EPSG:4326`) before clipping and
+  export.
+
 ## Still planned (explicit placeholders)
 
 - Loaders: `load_lidar`, `load_dem`, `load_footprints`
 - Processors: `join_pluto`, `generate_terrain_mesh`
 - Exporters: `export_3d_tiles`, `export_geoparquet`, `export_gltf`
-- CLI execution flow
 
 Planned functions are kept importable and typed so contributors can extend the
 target shape without guessing.

@@ -160,6 +160,183 @@ def test_citygml_happy_path_to_geojson(tmp_path: Path) -> None:
     assert len(first["geometry"]["coordinates"][0]) >= 4
 
 
+def test_cli_export_geojson_with_bbox(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    source_path = tmp_path / "sample.gml"
+    output_path = tmp_path / "buildings.geojson"
+    _write_fixture_citygml(source_path)
+
+    exit_code = m.main(
+        [
+            "export-geojson",
+            "--input",
+            str(source_path),
+            "--output",
+            str(output_path),
+            "--min-lat",
+            "40.687",
+            "--min-lon",
+            "-74.03",
+            "--max-lat",
+            "40.705",
+            "--max-lon",
+            "-74.0",
+        ]
+    )
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert "Exported 1 height-aware building feature(s)" in captured.out
+    assert str(output_path.resolve()) in captured.out
+    assert captured.err == ""
+
+    payload = json.loads(output_path.read_text(encoding="utf-8"))
+    assert [feature["id"] for feature in payload["features"]] == ["building-inside"]
+
+
+def test_cli_export_geojson_without_bbox_exports_all_height_aware_buildings(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    source_path = tmp_path / "sample.gml"
+    output_path = tmp_path / "all-buildings.geojson"
+    _write_fixture_citygml(source_path)
+
+    exit_code = m.main(
+        [
+            "export-geojson",
+            "--input",
+            str(source_path),
+            "--output",
+            str(output_path),
+        ]
+    )
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert "Exported 2 height-aware building feature(s)" in captured.out
+    assert captured.err == ""
+
+    payload = json.loads(output_path.read_text(encoding="utf-8"))
+    assert [feature["id"] for feature in payload["features"]] == [
+        "building-inside",
+        "building-outside",
+    ]
+
+
+def test_cli_requires_complete_bbox(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    source_path = tmp_path / "sample.gml"
+    output_path = tmp_path / "buildings.geojson"
+    _write_fixture_citygml(source_path)
+
+    exit_code = m.main(
+        [
+            "export-geojson",
+            "--input",
+            str(source_path),
+            "--output",
+            str(output_path),
+            "--min-lat",
+            "40.687",
+        ]
+    )
+
+    captured = capsys.readouterr()
+    assert exit_code == 2
+    assert captured.out == ""
+    assert (
+        "bbox clipping requires --min-lat, --min-lon, --max-lat, and --max-lon together"
+        in captured.err
+    )
+
+
+def test_cli_rejects_inverted_bbox(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    source_path = tmp_path / "sample.gml"
+    output_path = tmp_path / "buildings.geojson"
+    _write_fixture_citygml(source_path)
+
+    exit_code = m.main(
+        [
+            "export-geojson",
+            "--input",
+            str(source_path),
+            "--output",
+            str(output_path),
+            "--min-lat",
+            "40.705",
+            "--min-lon",
+            "-74.03",
+            "--max-lat",
+            "40.687",
+            "--max-lon",
+            "-74.0",
+        ]
+    )
+
+    captured = capsys.readouterr()
+    assert exit_code == 2
+    assert captured.out == ""
+    assert "--min-lat must be smaller than --max-lat" in captured.err
+
+
+def test_cli_reports_missing_input_file(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    output_path = tmp_path / "buildings.geojson"
+
+    exit_code = m.main(
+        [
+            "export-geojson",
+            "--input",
+            str(tmp_path / "missing.gml"),
+            "--output",
+            str(output_path),
+        ]
+    )
+
+    captured = capsys.readouterr()
+    assert exit_code == 1
+    assert captured.out == ""
+    assert "nyc-mesh: error: CityGML source does not exist:" in captured.err
+
+
+def test_cli_reports_invalid_xml(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    source_path = tmp_path / "broken.gml"
+    output_path = tmp_path / "buildings.geojson"
+    source_path.write_text("<broken>", encoding="utf-8")
+
+    exit_code = m.main(
+        [
+            "export-geojson",
+            "--input",
+            str(source_path),
+            "--output",
+            str(output_path),
+        ]
+    )
+
+    captured = capsys.readouterr()
+    assert exit_code == 1
+    assert captured.out == ""
+    assert "nyc-mesh: error:" in captured.err
+
+
+def test_cli_help_mentions_current_crs_assumption(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    exit_code = m.main(["--help"])
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert "export-geojson" in captured.out
+    assert "EPSG:2263" in captured.out
+    assert captured.err == ""
+
+
 def test_load_citygml_rejects_http_sources() -> None:
     with pytest.raises(ValueError, match="local file paths only"):
         m.load_citygml("https://example.com/buildings.gml")
