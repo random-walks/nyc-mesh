@@ -27,4 +27,6 @@
 
 ## Release Philosophy
 
-The first release should be small, reproducible, and obviously useful. A narrow workflow that works cleanly is more valuable than a broad but fragile feature list.
+The first release should be small, reproducible, and obviously useful. A narrow
+workflow that works cleanly is more valuable than a broad but fragile feature
+list.

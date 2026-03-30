@@ -2,7 +2,8 @@
 
 ## Problem
 
-NYC publishes high-value 3D geospatial data, but the raw formats are too heavy and specialized for many of the people who would benefit from them most.
+NYC publishes high-value 3D geospatial data, but the raw formats are too heavy
+and specialized for many of the people who would benefit from them most.
 
 ## Intended Users
 
@@ -22,7 +23,10 @@ NYC publishes high-value 3D geospatial data, but the raw formats are too heavy a
 
 ## Why This Is Worth Building
 
-There are building-block libraries for CityJSON, 3D Tiles, and general geospatial processing, but there is not an obvious NYC-specific package that turns raw NYC CityGML and LiDAR into easy browser-ready outputs with a lightweight Python workflow.
+There are building-block libraries for CityJSON, 3D Tiles, and general
+geospatial processing, but there is not an obvious NYC-specific package that
+turns raw NYC CityGML and LiDAR into easy browser-ready outputs with a
+lightweight Python workflow.
 
 ## Positioning
 

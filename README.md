@@ -5,7 +5,8 @@
 [![PyPI version][pypi-version]][pypi-link]
 [![PyPI platforms][pypi-platforms]][pypi-link]
 
-Python toolkit for converting NYC open CityGML buildings and LiDAR terrain into web-ready 3D geodata.
+Python toolkit for converting NYC open CityGML buildings and LiDAR terrain into
+web-ready 3D geodata.
 
 ## Status
 
@@ -23,7 +24,10 @@ Python toolkit for converting NYC open CityGML buildings and LiDAR terrain into 
 
 ## Why This Exists
 
-NYC publishes unusually rich 3D geospatial data, but the raw assets are hard to use in practice. The source files are large, specialized, and awkward to move into browser-friendly formats. `nyc-mesh` is meant to close that gap for planners, civic hackers, researchers, journalists, and students.
+NYC publishes unusually rich 3D geospatial data, but the raw assets are hard to
+use in practice. The source files are large, specialized, and awkward to move
+into browser-friendly formats. `nyc-mesh` is meant to close that gap for
+planners, civic hackers, researchers, journalists, and students.
 
 The goal is to make the first useful workflow feel like:
 
@@ -45,7 +49,9 @@ clipped = clip_to_bbox(
     buildings,
     BoundingBox(min_lat=40.70, min_lon=-74.02, max_lat=40.72, max_lon=-73.99),
 )
-export_geojson(clipped, ExportTarget(format="geojson", output_path=Path("buildings.geojson")))
+export_geojson(
+    clipped, ExportTarget(format="geojson", output_path=Path("buildings.geojson"))
+)
 ```
 
 This is intentionally narrow and designed to be reproducible before broader
@@ -61,7 +67,8 @@ format coverage lands.
 ## Seeded Sources Of Truth
 
 - `docs/notes/original-spec.md`: exact copied seed spec for `nyc-mesh`
-- `docs/notes/gap-explination.md`: exact copied gap analysis that explains why this project is still worth building
+- `docs/notes/gap-explination.md`: exact copied gap analysis that explains why
+  this project is still worth building
 - `docs/agent-kickoff-todo.md`: kickoff plan for follow-on implementation agents
 - `docs/agent-handoff-prompt.md`: paste-ready prompt for the next agent session
 

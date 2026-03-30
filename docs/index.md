@@ -18,7 +18,8 @@ The current v0.1 state now includes one real happy path:
 Everything else remains scaffolded with explicit `NotImplementedError`
 placeholders.
 
-This docs site now includes two exact source documents imported from the showcase planning repo:
+This docs site now includes two exact source documents imported from the
+showcase planning repo:
 
 - the original `nyc-mesh` seed spec
 - the gap explanation for why this is still a real OSS opportunity

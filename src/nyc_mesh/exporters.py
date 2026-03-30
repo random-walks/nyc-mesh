@@ -12,9 +12,8 @@ if TYPE_CHECKING:
 
     from .models import BuildingFeature, ExportTarget
 
-def export_geojson(
-    data: tuple[BuildingFeature, ...], target: ExportTarget
-) -> Path:
+
+def export_geojson(data: tuple[BuildingFeature, ...], target: ExportTarget) -> Path:
     """Export height-aware building data to GeoJSON."""
     if target.format.lower() != "geojson":
         message = "export_geojson() requires ExportTarget.format to be 'geojson'."

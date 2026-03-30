@@ -19,6 +19,7 @@ env:
   # Set it to 3 to support 8-bit color graphics (256 colors per channel)
   # for libraries that care about the value set.
   FORCE_COLOR: 3
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   lint:
@@ -76,7 +77,8 @@ jobs:
 
   compatibility-checks:
     if: github.event_name != 'pull_request'
-    name: Compatibility Python ${{ matrix.python-version }} on ${{ matrix.runs-on }}
+    name:
+      Compatibility Python ${{ matrix.python-version }} on ${{ matrix.runs-on }}
     runs-on: ${{ matrix.runs-on }}
     strategy:
       fail-fast: false

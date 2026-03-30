@@ -53,19 +53,25 @@ def _ring_from_pos_list(polygon: Any, ring: Any) -> tuple[Coordinate2D, ...]:
         or ""
     )
     srs_dimension = int(srs_dimension_raw) if srs_dimension_raw.isdigit() else 0
-    dimension = srs_dimension if srs_dimension in {2, 3} else 3 if len(values) % 3 == 0 else 2
+    dimension = (
+        srs_dimension if srs_dimension in {2, 3} else 3 if len(values) % 3 == 0 else 2
+    )
 
     if len(values) % dimension != 0:
         message = "Invalid CityGML ring coordinate count in gml:posList."
         raise ValueError(message)
 
-    coords = [(values[index], values[index + 1]) for index in range(0, len(values), dimension)]
+    coords = [
+        (values[index], values[index + 1]) for index in range(0, len(values), dimension)
+    ]
     return _normalise_ring(tuple(coords))
 
 
 def _ring_from_pos_nodes(ring: Any) -> tuple[Coordinate2D, ...]:
     coords: list[Coordinate2D] = []
-    for pos_node in cast("list[etree._Element]", ring.xpath("./gml:pos", namespaces=_NS)):
+    for pos_node in cast(
+        "list[etree._Element]", ring.xpath("./gml:pos", namespaces=_NS)
+    ):
         raw_text = (pos_node.text or "").strip()
         if not raw_text:
             continue
@@ -121,7 +127,9 @@ def load_citygml(source: str | Path) -> CityGMLDataset:
     if not source_path.is_file():
         message = f"CityGML source must be a file path: {source_path}"
         raise ValueError(message)
-    parser = etree.XMLParser(resolve_entities=False, no_network=True, remove_comments=True)
+    parser = etree.XMLParser(
+        resolve_entities=False, no_network=True, remove_comments=True
+    )
     root = etree.parse(str(source_path), parser=parser).getroot()
 
     buildings: list[CityGMLBuilding] = []

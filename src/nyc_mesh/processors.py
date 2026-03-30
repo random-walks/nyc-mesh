@@ -21,7 +21,9 @@ def _normalise_ring(coords: tuple[Coordinate2D, ...]) -> tuple[Coordinate2D, ...
     return closed_ring
 
 
-def _project_ring_to_wgs84(ring_2263: tuple[Coordinate2D, ...]) -> tuple[Coordinate2D, ...]:
+def _project_ring_to_wgs84(
+    ring_2263: tuple[Coordinate2D, ...],
+) -> tuple[Coordinate2D, ...]:
     projected: list[Coordinate2D] = []
     for x_coord, y_coord in ring_2263:
         lon, lat = _TO_WGS84.transform(x_coord, y_coord)
