@@ -7,6 +7,7 @@ from typing import NoReturn
 
 def planned_surface(name: str) -> NoReturn:
     """Raise a consistent error for scaffolded-but-unbuilt features."""
-    raise NotImplementedError(
+    message = (
         f"{name} is part of the planned nyc-mesh surface but is not implemented yet."
     )
+    raise NotImplementedError(message)

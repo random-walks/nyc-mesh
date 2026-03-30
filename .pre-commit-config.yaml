@@ -56,6 +56,7 @@ repos:
         files: src|tests|noxfile.py
         args: []
         additional_dependencies:
+          - lxml-stubs
           - nox
           - pytest
 

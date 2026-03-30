@@ -30,7 +30,10 @@ classifiers = [
   "Typing :: Typed",
 ]
 dynamic = ["version"]
-dependencies = []
+dependencies = [
+  "lxml>=6.0.2",
+  "pyproj>=3.7.2",
+]
 
 [project.scripts]
 nyc-mesh = "nyc_mesh.cli:main"
@@ -106,6 +109,10 @@ disallow_incomplete_defs = false
 module = "nyc_mesh.*"
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
+
+[[tool.mypy.overrides]]
+module = "lxml.*"
+ignore_missing_imports = true
 
 
 [tool.ruff]
