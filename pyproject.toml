@@ -174,8 +174,10 @@ py-version = "3.11"
 ignore-paths = [".*/_version.py"]
 reports.output-format = "colorized"
 similarities.ignore-imports = "yes"
+extension-pkg-allow-list = ["lxml"]
 messages_control.disable = [
   "design",
+  "duplicate-code",
   "fixme",
   "line-too-long",
   "missing-module-docstring",
