@@ -32,7 +32,12 @@ def _project_ring_to_wgs84(
 
 
 def extract_buildings(citygml_data: CityGMLDataset) -> tuple[BuildingFeature, ...]:
-    """Extract WGS84 footprints and measured heights from CityGML data."""
+    """Extract height-aware WGS84 building footprints from loaded CityGML data.
+
+    v0.1 keeps only buildings with ``bldg:measuredHeight`` and assumes the
+    source footprint coordinates are in NYC's ``EPSG:2263`` before
+    reprojection to ``EPSG:4326``.
+    """
     extracted: list[BuildingFeature] = []
     for building in citygml_data.buildings:
         if building.measured_height is None:
@@ -53,7 +58,11 @@ def extract_buildings(citygml_data: CityGMLDataset) -> tuple[BuildingFeature, ..
 def clip_to_bbox(
     data: tuple[BuildingFeature, ...], bbox: BoundingBox
 ) -> tuple[BuildingFeature, ...]:
-    """Clip height-aware building features to a WGS84 bounding box."""
+    """Clip height-aware building features to a WGS84 bounding box.
+
+    The current implementation uses bounding-box intersection against each
+    feature's footprint extent rather than polygon clipping.
+    """
     clipped: list[BuildingFeature] = []
     for feature in data:
         longitudes = tuple(coord[0] for coord in feature.footprint_4326)

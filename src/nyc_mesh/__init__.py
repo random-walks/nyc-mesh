@@ -28,6 +28,7 @@ from .processors import (
     generate_terrain_mesh,
     join_pluto,
 )
+from .sdk import export_citygml_geojson, extract_citygml_buildings
 
 __all__ = [
     "BoundingBox",
@@ -39,10 +40,12 @@ __all__ = [
     "__version__",
     "clip_to_bbox",
     "export_3d_tiles",
+    "export_citygml_geojson",
     "export_geojson",
     "export_geoparquet",
     "export_gltf",
     "extract_buildings",
+    "extract_citygml_buildings",
     "generate_terrain_mesh",
     "join_pluto",
     "load_citygml",

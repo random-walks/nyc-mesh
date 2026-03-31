@@ -112,9 +112,15 @@ def _extract_measured_height(building: Any) -> float | None:
 
 
 def load_citygml(source: str | Path) -> CityGMLDataset:
-    """Load NYC building geometry from a local CityGML file.
+    """Load building footprints and measured heights from a local CityGML file.
 
-    v0.1 intentionally supports local files only.
+    The current v0.1 implementation is intentionally narrow:
+
+    - only local file paths are accepted
+    - buildings are discovered from ``bldg:Building`` elements
+    - the first usable exterior polygon ring is retained per building
+    - source coordinates are preserved as parsed and later treated as EPSG:2263
+      by :func:`nyc_mesh.processors.extract_buildings`
     """
     if isinstance(source, str) and source.startswith(("http://", "https://")):
         message = "v0.1 load_citygml() supports local file paths only."

@@ -7,7 +7,8 @@
 - Reproject output to EPSG:4326
 - Clip by bounding box
 - Export height-aware GeoJSON
-- Ship one notebook that renders a recognizable NYC neighborhood in 3D
+- Ship one real CLI command for the happy path
+- Ship one notebook walkthrough for a recognizable NYC neighborhood clip
 
 ## v0.1 Non-Goals
 
@@ -22,7 +23,6 @@
 - 3D Tiles export
 - GeoParquet export
 - PLUTO joins
-- CLI entry points
 - pre-built neighborhood clips
 
 ## Release Philosophy

@@ -23,7 +23,7 @@ class BoundingBox:
 
 @dataclass(frozen=True)
 class CityGMLBuilding:
-    """Single building footprint payload parsed from CityGML."""
+    """Single CityGML building with an EPSG:2263 footprint and optional height."""
 
     building_id: str
     footprint_2263: tuple[Coordinate2D, ...]
@@ -32,7 +32,7 @@ class CityGMLBuilding:
 
 @dataclass(frozen=True)
 class CityGMLDataset:
-    """In-memory representation of a loaded CityGML file."""
+    """Loaded local CityGML source and parsed building records."""
 
     source: Path
     buildings: tuple[CityGMLBuilding, ...]
@@ -40,7 +40,7 @@ class CityGMLDataset:
 
 @dataclass(frozen=True)
 class BuildingFeature:
-    """Height-aware building feature in WGS84 coordinates."""
+    """Height-aware building feature reprojected to WGS84 coordinates."""
 
     building_id: str
     footprint_4326: tuple[Coordinate2D, ...]
@@ -57,7 +57,7 @@ class NeighborhoodRequest:
 
 @dataclass(frozen=True)
 class ExportTarget:
-    """Destination metadata for an eventual export command."""
+    """Destination metadata for an implemented or planned export command."""
 
     format: str
     output_path: Path
