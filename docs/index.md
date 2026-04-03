@@ -3,6 +3,8 @@
 `nyc-mesh` is a Python toolkit for turning NYC open 3D source data into
 web-ready geodata.
 
+Authored by [Blaise Albis-Burdige](https://blaiseab.com/).
+
 It focuses on the messy middle between raw public files and practical outputs
 for notebooks, browsers, and spatial analysis workflows.
 
@@ -37,3 +39,14 @@ analysis-ready outputs quickly and reproducibly.
 - Hosted docs: [nyc-mesh.readthedocs.io](https://nyc-mesh.readthedocs.io/)
 - Local preview: `make docs`
 - Strict docs build: `make docs-build`
+
+## Choose Your Path
+
+- Start with [Getting Started](getting-started.md) for installation and the
+  first CityGML-to-GeoJSON workflow.
+- Use [CLI Reference](cli.md) for repeatable command-line usage.
+- Use [SDK Guide](sdk.md) for script and notebook-oriented helpers.
+- Use [Notebooks](notebooks.md) for the current reproducible walkthrough.
+- Use [Python API](api.md) for the complete public package surface.
+- Use [Contributing](contributing.md) if you are maintaining or extending the
+  repo.
