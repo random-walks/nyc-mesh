@@ -139,10 +139,14 @@ def main() -> int:
                 f"nyc_mesh.__all__ must not export private name {symbol_name!r}."
             )
         if not hasattr(module, symbol_name):
-            raise ValueError(f"nyc_mesh.__all__ references missing symbol {symbol_name!r}.")
+            raise ValueError(
+                f"nyc_mesh.__all__ references missing symbol {symbol_name!r}."
+            )
 
         symbol = getattr(module, symbol_name)
-        origin_module = import_map.get(symbol_name, getattr(symbol, "__module__", module_name))
+        origin_module = import_map.get(
+            symbol_name, getattr(symbol, "__module__", module_name)
+        )
         if symbol_name == "__version__":
             origin_module = "nyc_mesh._version"
 
