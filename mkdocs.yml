@@ -61,7 +61,7 @@ nav:
   - SDK Guide: sdk.md
   - Architecture: architecture.md
   - Notebooks: notebooks.md
-  - API Reference: api.md
+  - Python API: api.md
   - Contributing: contributing.md
   - Releasing: releasing.md
   - Changelog: changelog.md
