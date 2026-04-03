@@ -180,7 +180,9 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["T20"]
-"noxfile.py" = ["T20"]
+"noxfile.py" = ["EXE001", "T20"]
+"src/nyc_mesh/__main__.py" = ["I001"]
+"scripts/*.py" = ["EM", "TRY", "F541"]
 "docs/examples/**" = ["T20"]
 
 
