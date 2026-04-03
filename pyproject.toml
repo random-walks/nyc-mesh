@@ -60,7 +60,13 @@ test = [
   "pytest >=9",
   "pytest-cov >=7",
 ]
+lint = [
+  "mypy >=1.19.1",
+  "pylint >=3.3",
+  "ruff >=0.15.8",
+]
 dev = [
+  { include-group = "lint" },
   { include-group = "test" },
 ]
 docs = [
