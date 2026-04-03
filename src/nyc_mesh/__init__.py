@@ -1,7 +1,7 @@
-"""Top-level package for the planned ``nyc-mesh`` API surface.
+"""Top-level package for the current and planned ``nyc-mesh`` API surface.
 
-The repository is intentionally seeded with typed placeholders so contributors
-can see the target shape of the library before the implementation lands.
+The repository now ships a small real extraction path while keeping future
+layers explicit as typed placeholders.
 """
 
 from __future__ import annotations

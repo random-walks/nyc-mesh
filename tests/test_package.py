@@ -17,12 +17,7 @@ from nyc_mesh.models import (
 
 
 def test_version() -> None:
-    try:
-        package_version = importlib.metadata.version("nyc_mesh")
-    except importlib.metadata.PackageNotFoundError:
-        assert m.__version__ == "0+unknown"
-    else:
-        assert package_version == m.__version__
+    assert importlib.metadata.version("nyc-mesh") == m.__version__
 
 
 def test_planned_surface_is_importable() -> None:

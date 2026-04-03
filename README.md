@@ -5,200 +5,100 @@
 [![PyPI version][pypi-version]][pypi-link]
 [![PyPI platforms][pypi-platforms]][pypi-link]
 
-Python toolkit for converting NYC open CityGML buildings and LiDAR terrain into
-web-ready 3D geodata.
+Python toolkit for converting NYC open 3D source data into web-ready geodata.
 
-## Status
+`nyc-mesh` focuses on the messy middle between raw public CityGML releases and
+practical outputs for browsers, notebooks, and reproducible analysis workflows.
 
-`nyc-mesh` has moved from pure scaffold to a small v0.1 foundation.
+## What ships in the `0.1` line
 
-- Packaging, docs, CI, and release plumbing are in place.
-- The first end-to-end happy path is implemented:
-  - load one local CityGML file
-  - extract footprint + measured height
-  - reproject EPSG:2263 coordinates to EPSG:4326
-  - clip by WGS84 bounding box
-  - export height-aware GeoJSON
-- A matching CLI command now ships for that same narrow workflow.
-- Remaining planned features stay explicit as typed placeholders that raise
-  `NotImplementedError`.
+The current release implements one honest end-to-end path:
 
-## Why This Exists
+- load a local CityGML file
+- extract footprint and measured height
+- reproject source coordinates from `EPSG:2263` to `EPSG:4326`
+- optionally clip by WGS84 bounding box
+- export height-aware GeoJSON
+- run the same flow from the installed `nyc-mesh` CLI
 
-NYC publishes unusually rich 3D geospatial data, but the raw assets are hard to
-use in practice. The source files are large, specialized, and awkward to move
-into browser-friendly formats. `nyc-mesh` is meant to close that gap for
-planners, civic hackers, researchers, journalists, and students.
+Everything else stays scaffolded with explicit `NotImplementedError`
+placeholders until the implementation is real.
 
-The goal is to make the first useful workflow feel like:
+## Why this exists
 
-1. Download or point at NYC source data.
-2. Clip to a neighborhood or bounding box.
-3. Export web-friendly outputs for mapping, rendering, or analysis.
+NYC publishes unusually rich 3D geospatial data, but the raw formats are hard
+to use in practice. The source files are large, specialist, and awkward to
+transform into lightweight outputs for web rendering or neighborhood-scale
+analysis.
 
-## Implemented v0.1 Happy Path
+This package aims to make the first useful workflow feel like:
 
-```python
-from pathlib import Path
+1. point at a CityGML source file
+2. extract and clip the buildings you care about
+3. export a web-friendly GeoJSON artifact
 
-from nyc_mesh import BoundingBox, ExportTarget
-from nyc_mesh import clip_to_bbox, export_geojson, extract_buildings, load_citygml
+## Quickstart
 
-dataset = load_citygml(Path("sample.gml"))
-buildings = extract_buildings(dataset)
-clipped = clip_to_bbox(
-    buildings,
-    BoundingBox(min_lat=40.70, min_lon=-74.02, max_lat=40.72, max_lon=-73.99),
-)
-export_geojson(
-    clipped, ExportTarget(format="geojson", output_path=Path("buildings.geojson"))
-)
-```
-
-This is intentionally narrow and designed to be reproducible before broader
-format coverage lands.
-
-## Notebook Walkthrough
-
-The repo now includes a first notebook walkthrough at
-`notebooks/dumbo-citygml-geojson-walkthrough.ipynb`.
-
-It is deliberately small and reproducible rather than download-heavy:
-
-- creates a tiny local CityGML fixture
-- clips to a DUMBO-like WGS84 bounding box
-- uses the shipped SDK helpers
-- exports a height-aware GeoJSON file
-- inspects the resulting feature payload
-
-This gives notebook and data-pipeline users a concrete example without
-pretending that LiDAR, terrain, or full-neighborhood production processing is
-already implemented.
-
-## Python SDK Convenience Helpers
-
-For notebook, ETL, and data-science-style pipelines, the same workflow is also
-available through two higher-level helpers:
-
-```python
-from pathlib import Path
-
-from nyc_mesh import BoundingBox, export_citygml_geojson, extract_citygml_buildings
-
-bbox = BoundingBox(min_lat=40.70, min_lon=-74.02, max_lat=40.72, max_lon=-73.99)
-
-features = extract_citygml_buildings(Path("sample.gml"), bbox=bbox)
-output_path = export_citygml_geojson(
-    Path("sample.gml"),
-    Path("buildings.geojson"),
-    bbox=bbox,
-)
-```
-
-These helpers stay intentionally honest about the current v0.1 limits:
-
-- local CityGML files only
-- only buildings with `bldg:measuredHeight`
-- source coordinates assumed to be `EPSG:2263`
-- output reprojected to `EPSG:4326`
-- optional bbox clipping in WGS84
-
-## CLI
-
-The installed `nyc-mesh` command now exposes the same implemented v0.1 flow:
+Install:
 
 ```bash
-nyc-mesh export-geojson \
-  --input sample.gml \
-  --output buildings.geojson \
-  --min-lat 40.70 \
-  --min-lon -74.02 \
-  --max-lat 40.72 \
-  --max-lon -73.99
+pip install nyc-mesh
 ```
 
-What this command does today:
-
-1. loads one local CityGML file
-2. extracts only buildings with `bldg:measuredHeight`
-3. assumes the source coordinates are NYC EPSG:2263
-4. reprojects those footprints to WGS84 (EPSG:4326)
-5. optionally clips them with a WGS84 bounding box
-6. writes a GeoJSON `FeatureCollection`
-
-The bounding box is optional. If you omit the four bbox flags, the command
-exports every extracted height-aware building from the input file.
+Export GeoJSON from CityGML:
 
 ```bash
 nyc-mesh export-geojson --input sample.gml --output buildings.geojson
 ```
 
-Validation is intentionally strict and narrow:
+## Python example
 
-- input must be a local file path
-- bbox clipping requires all four bbox flags together
-- `--min-lat < --max-lat`
-- `--min-lon < --max-lon`
+```python
+from pathlib import Path
 
-## Implemented Output
+from nyc_mesh import BoundingBox, export_citygml_geojson
 
-- GeoJSON with building heights for deck.gl and Mapbox workflows
+export_citygml_geojson(
+    Path("sample.gml"),
+    Path("buildings.geojson"),
+    bbox=BoundingBox(
+        min_lat=40.70,
+        min_lon=-74.02,
+        max_lat=40.72,
+        max_lon=-73.99,
+    ),
+)
+```
 
-## Planned Outputs (Not Yet Implemented)
+## Current assumptions
 
-- 3D Tiles for Cesium-style viewers
-- GeoParquet for analytics pipelines
-- glTF for lightweight 3D visualization
+The implemented `0.1` path is intentionally narrow:
 
-## Seeded Sources Of Truth
+- local CityGML files only
+- only buildings with `bldg:measuredHeight`
+- source coordinates are treated as `EPSG:2263`
+- outputs are reprojected to `EPSG:4326`
+- optional clipping uses a WGS84 bounding box
 
-- `docs/notes/original-spec.md`: exact copied seed spec for `nyc-mesh`
-- `docs/notes/gap-explination.md`: exact copied gap analysis that explains why
-  this project is still worth building
-- `docs/agent-kickoff-todo.md`: kickoff plan for follow-on implementation agents
-- `docs/agent-handoff-prompt.md`: paste-ready prompt for the next agent session
+## Notebook walkthrough
 
-## Initial Scope
+The repo includes a small reproducible notebook at
+`notebooks/dumbo-citygml-geojson-walkthrough.ipynb` for the current happy path.
 
-- CityGML loader for NYC building data (implemented for local files)
-- Footprint and height extraction (implemented)
-- EPSG:2263 to EPSG:4326 reprojection (implemented)
-- Bounding-box clipping (implemented)
-- Example notebook for rendering one neighborhood in 3D
+## Documentation
 
-## Scaffolded Package Surface
-
-The package exposes a typed surface where implemented and planned areas are both
-clear:
-
-- `nyc_mesh.loaders`
-- `nyc_mesh.processors`
-- `nyc_mesh.exporters`
-- `nyc_mesh.models`
-- `nyc_mesh.cli`
-
-Implemented today:
-
-- `load_citygml`
-- `extract_buildings`
-- `clip_to_bbox`
-- `export_geojson`
-- `extract_citygml_buildings`
-- `export_citygml_geojson`
-- `nyc-mesh export-geojson`
-
-Still planned (`NotImplementedError`):
-
-- `load_lidar`, `load_dem`, `load_footprints`
-- `join_pluto`, `generate_terrain_mesh`
-- `export_3d_tiles`, `export_geoparquet`, `export_gltf`
+- Hosted docs: [nyc-mesh.readthedocs.io](https://nyc-mesh.readthedocs.io/)
+- Local preview: `make docs`
+- Strict docs build: `make docs-build`
 
 ## Development
 
 ```bash
-uv sync --group docs
-uv run pytest
-uv run mkdocs serve
+make install-dev
+make test
+make lint
+make docs-build
+make ci
 ```
 
 ## License
