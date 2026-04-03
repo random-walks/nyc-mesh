@@ -95,8 +95,7 @@ The repo includes a small reproducible notebook at
 
 ## Quick links
 
-Docs:
-[Home](https://nyc-mesh.readthedocs.io/en/latest/),
+Docs: [Home](https://nyc-mesh.readthedocs.io/en/latest/),
 [Getting Started](https://nyc-mesh.readthedocs.io/en/latest/getting-started/),
 [CLI Reference](https://nyc-mesh.readthedocs.io/en/latest/cli/),
 [SDK Guide](https://nyc-mesh.readthedocs.io/en/latest/sdk/),
