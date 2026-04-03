@@ -1,30 +1,21 @@
-# Notebook walkthroughs
+# Notebook Walkthroughs
 
-`nyc-mesh` now ships one small, reproducible notebook walkthrough for the
-implemented v0.1 happy path:
+`nyc-mesh` currently ships one notebook walkthrough:
 
 - `notebooks/dumbo-citygml-geojson-walkthrough.ipynb`
 
-## What this notebook covers
+## What it demonstrates
 
-The walkthrough stays narrow and honest about current scope. It:
+The walkthrough stays narrow and reproducible:
 
-1. creates a small local CityGML fixture
-2. uses the shipped SDK helpers to extract height-aware buildings
-3. clips them to a WGS84 bounding box near DUMBO
-4. exports height-aware GeoJSON
-5. inspects the resulting feature payload
+1. create or stage a small local CityGML sample
+2. run the SDK helper path
+3. clip to a DUMBO-like bounding box
+4. export height-aware GeoJSON
+5. inspect the resulting payload
 
-## Why it uses a fixture instead of a downloaded dataset
+## Why the example is small
 
-For v0.1, the notebook is designed to be reproducible in CI-like and local
-environments without depending on a large external download. That keeps the
-example aligned with the currently implemented package behavior:
-
-- local CityGML files only
-- measured-height buildings only
-- source coordinates assumed to be `EPSG:2263`
-- output reprojected to `EPSG:4326`
-
-As the package grows, this notebook can evolve from a tiny fixture-driven
-walkthrough into a neighborhood-scale example backed by a real source clip.
+The current package is optimized for a clean first extraction path, not a giant
+download-heavy demo. The notebook mirrors that philosophy so the example remains
+portable and honest about the present scope.

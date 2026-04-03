@@ -6,17 +6,27 @@ build-backend = "hatchling.build"
 [project]
 name = "nyc-mesh"
 authors = [
-  { name = "random-walks", email = "blaise@buenaola.io" },
+  { name = "Blaise Albis-Burdige" },
 ]
 description = "Python toolkit for converting NYC CityGML and LiDAR into web-ready 3D geodata."
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 requires-python = ">=3.11"
+keywords = [
+  "nyc",
+  "3d",
+  "citygml",
+  "lidar",
+  "mesh",
+  "civic-tech",
+  "geospatial",
+]
 classifiers = [
-  "Development Status :: 1 - Planning",
+  "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",
   "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
@@ -24,7 +34,6 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
-  "Programming Language :: Python :: 3.14",
   "Topic :: Scientific/Engineering",
   "Typing :: Typed",
 ]
@@ -39,6 +48,8 @@ nyc-mesh = "nyc_mesh.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/random-walks/nyc-mesh"
+"Documentation" = "https://nyc-mesh.readthedocs.io/"
+Portfolio = "https://blaiseab.com/"
 "Bug Tracker" = "https://github.com/random-walks/nyc-mesh/issues"
 Discussions = "https://github.com/random-walks/nyc-mesh/discussions"
 Changelog = "https://github.com/random-walks/nyc-mesh/releases"
@@ -59,7 +70,11 @@ docs = [
     "mkdocs>=1.1.2",
     "mkdocstrings-python>=1.18.2",
     "pyyaml>=6.0.1",
+    "ruff>=0.12",
 ]
+
+[tool.uv]
+default-groups = ["dev"]
 
 
 [tool.hatch]

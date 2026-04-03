@@ -1,45 +1,39 @@
 # nyc-mesh
 
-`nyc-mesh` is a Python-first toolkit for turning NYC open 3D source data into
-outputs that are practical for web visualization and spatial analysis.
+`nyc-mesh` is a Python toolkit for turning NYC open 3D source data into
+web-ready geodata.
 
-The project started from a clean package scaffold so the repository can grow in
-public with stable packaging, CI, documentation, and release hygiene from the
-beginning.
+It focuses on the messy middle between raw public files and practical outputs
+for notebooks, browsers, and spatial analysis workflows.
 
-The current v0.1 state now includes one real happy path:
+## What ships now
 
-- load local CityGML
-- extract footprints + measured heights
-- reproject EPSG:2263 to EPSG:4326
-- clip by WGS84 bounding box
+The current `0.1` line provides one real end-to-end path:
+
+- load a local CityGML file
+- extract building footprints and measured heights
+- reproject from `EPSG:2263` to `EPSG:4326`
+- optionally clip to a WGS84 bounding box
 - export height-aware GeoJSON
-- run the same flow from the `nyc-mesh export-geojson` CLI
-- follow a notebook walkthrough for a DUMBO-scale example
+- run the same flow from the installed `nyc-mesh` CLI
 
-Everything else remains scaffolded with explicit `NotImplementedError`
-placeholders.
+## What does not ship yet
 
-This docs site now includes two exact source documents imported from the
-showcase planning repo:
+These public surfaces remain explicit placeholders:
 
-- the original `nyc-mesh` seed spec
-- the gap explanation for why this is still a real OSS opportunity
+- LiDAR and DEM loading
+- terrain mesh generation
+- PLUTO joins
+- 3D Tiles, GeoParquet, and glTF export
 
-## Project Focus
+## Positioning
 
-- Keep the dependency stack lightweight for a geospatial workflow
-- Handle NYC-specific gotchas like EPSG:2263 reprojection automatically
-- Make small-area extraction easy before tackling large-area tiling
-- Produce outputs that fit both browser rendering and analytical workflows
+This package is not a general-purpose 3D GIS platform. It is an NYC-focused
+tool for getting from raw CityGML and related open data to browser-friendly or
+analysis-ready outputs quickly and reproducibly.
 
-## Read Next
+## Docs Paths
 
-- [Project brief](project-brief.md)
-- [Data sources](data-sources.md)
-- [MVP roadmap](mvp-roadmap.md)
-- [Notebook walkthroughs](notebooks.md)
-- [Agent kickoff TODO](agent-kickoff-todo.md)
-- [Agent handoff prompt](agent-handoff-prompt.md)
-- [Original seed spec](notes/original-spec.md)
-- [Gap explination](notes/gap-explination.md)
+- Hosted docs: [nyc-mesh.readthedocs.io](https://nyc-mesh.readthedocs.io/)
+- Local preview: `make docs`
+- Strict docs build: `make docs-build`
