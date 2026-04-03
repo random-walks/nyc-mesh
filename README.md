@@ -26,8 +26,8 @@ placeholders until the implementation is real.
 
 ## Why this exists
 
-NYC publishes unusually rich 3D geospatial data, but the raw formats are hard
-to use in practice. The source files are large, specialist, and awkward to
+NYC publishes unusually rich 3D geospatial data, but the raw formats are hard to
+use in practice. The source files are large, specialist, and awkward to
 transform into lightweight outputs for web rendering or neighborhood-scale
 analysis.
 

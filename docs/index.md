@@ -28,8 +28,8 @@ These public surfaces remain explicit placeholders:
 
 ## Positioning
 
-This package is not a general-purpose 3D GIS platform. It is an NYC-focused
-tool for getting from raw CityGML and related open data to browser-friendly or
+This package is not a general-purpose 3D GIS platform. It is an NYC-focused tool
+for getting from raw CityGML and related open data to browser-friendly or
 analysis-ready outputs quickly and reproducibly.
 
 ## Docs Paths

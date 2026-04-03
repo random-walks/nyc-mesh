@@ -1,11 +1,12 @@
 # SDK Guide
 
-The `0.1` line provides two convenience helpers on top of the loader,
-processor, and exporter modules.
+The `0.1` line provides two convenience helpers on top of the loader, processor,
+and exporter modules.
 
 ## `extract_citygml_buildings()`
 
-Use this helper when you want extracted height-aware building features in memory:
+Use this helper when you want extracted height-aware building features in
+memory:
 
 ```python
 from pathlib import Path
