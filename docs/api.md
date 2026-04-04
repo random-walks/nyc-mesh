@@ -1,12 +1,46 @@
 # API Reference
 
-The stable public surface for this package is the top-level `nyc_mesh`
-namespace.
+The supported public contract is now subpackage-first:
 
-This page is generated from that namespace so the published docs, package
-exports, and API audit stay aligned.
+- `nyc_mesh.models`
+- `nyc_mesh.io`
+- `nyc_mesh.analysis`
+- `nyc_mesh.export`
+- `nyc_mesh.pipeline`
+- `nyc_mesh.samples`
+- `nyc_mesh.cli`
 
-Underscore-prefixed modules are internal implementation details and are not part
-of the supported public contract.
+The root `nyc_mesh` namespace is intentionally minimal and only exposes
+`__version__`.
+
+## Root
 
 ::: nyc_mesh
+
+## Models
+
+::: nyc_mesh.models
+
+## IO
+
+::: nyc_mesh.io
+
+## Analysis
+
+::: nyc_mesh.analysis
+
+## Export
+
+::: nyc_mesh.export
+
+## Pipeline
+
+::: nyc_mesh.pipeline
+
+## Samples
+
+::: nyc_mesh.samples
+
+## CLI
+
+::: nyc_mesh.cli

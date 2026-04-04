@@ -1,7 +1,7 @@
-# SDK Guide
+# Pipeline Guide
 
-The `0.1` line provides two convenience helpers on top of the loader, processor,
-and exporter modules.
+`nyc_mesh.pipeline` provides short-path helpers on top of the lower-level
+subpackage APIs.
 
 ## `extract_citygml_buildings()`
 
@@ -11,11 +11,11 @@ memory:
 ```python
 from pathlib import Path
 
-from nyc_mesh import BoundingBox, extract_citygml_buildings
+from nyc_mesh import models, pipeline
 
-features = extract_citygml_buildings(
+features = pipeline.extract_citygml_buildings(
     Path("sample.gml"),
-    bbox=BoundingBox(
+    bbox=models.BoundingBox(
         min_lat=40.70,
         min_lon=-74.02,
         max_lat=40.72,
@@ -32,16 +32,31 @@ Use this helper when you want the full happy path and a written GeoJSON file:
 ```python
 from pathlib import Path
 
-from nyc_mesh import export_citygml_geojson
+from nyc_mesh import pipeline
 
-output_path = export_citygml_geojson(
+output_path = pipeline.export_citygml_geojson(
     Path("sample.gml"),
     Path("buildings.geojson"),
 )
 print(output_path)
 ```
 
+## `export_citygml_geoparquet()`
+
+```python
+from pathlib import Path
+
+from nyc_mesh import pipeline
+
+output_path = pipeline.export_citygml_geoparquet(
+    Path("sample.gml"),
+    Path("buildings.parquet"),
+)
+print(output_path)
+```
+
 ## Why this layer exists
 
-The lower-level modules stay readable and composable, while the SDK helpers give
-notebooks and one-off scripts a short path through the current implemented flow.
+The lower-level subpackages stay readable and composable, while the pipeline
+helpers give scripts and examples a short path through the current implemented
+flows.

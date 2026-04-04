@@ -10,23 +10,18 @@ for notebooks, browsers, and spatial analysis workflows.
 
 ## What ships now
 
-The current `0.1` line provides one real end-to-end path:
+The current package provides one real CityGML happy path plus several follow-on
+building blocks:
 
 - load a local CityGML file
 - extract building footprints and measured heights
 - reproject from `EPSG:2263` to `EPSG:4326`
 - optionally clip to a WGS84 bounding box
 - export height-aware GeoJSON
+- load LiDAR, DEM, and footprint data
+- generate lightweight terrain meshes
+- export GeoParquet, glTF, and a minimal 3D Tiles package
 - run the same flow from the installed `nyc-mesh` CLI
-
-## What does not ship yet
-
-These public surfaces remain explicit placeholders:
-
-- LiDAR and DEM loading
-- terrain mesh generation
-- PLUTO joins
-- 3D Tiles, GeoParquet, and glTF export
 
 ## Positioning
 
@@ -45,8 +40,8 @@ analysis-ready outputs quickly and reproducibly.
 - Start with [Getting Started](getting-started.md) for installation and the
   first CityGML-to-GeoJSON workflow.
 - Use [CLI Reference](cli.md) for repeatable command-line usage.
-- Use [SDK Guide](sdk.md) for script and notebook-oriented helpers.
-- Use [Notebooks](notebooks.md) for the current reproducible walkthrough.
+- Use [SDK Guide](sdk.md) for script and pipeline-oriented helpers.
+- Use [Examples](examples.md) for the repo-level reproducible walkthroughs.
 - Use [Python API](api.md) for the complete public package surface.
 - Use [Contributing](contributing.md) if you are maintaining or extending the
   repo.

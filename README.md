@@ -12,19 +12,18 @@ Authored by [Blaise Albis-Burdige](https://blaiseab.com/).
 `nyc-mesh` focuses on the messy middle between raw public CityGML releases and
 practical outputs for browsers, notebooks, and reproducible analysis workflows.
 
-## What ships in the `0.1` line
+## What ships in the current line
 
-The current release implements one honest end-to-end path:
+The current package now includes a broader but still honest toolkit:
 
-- load a local CityGML file
-- extract footprint and measured height
+- load CityGML, LiDAR, DEM, and footprint inputs
+- extract footprint and measured height from CityGML
 - reproject source coordinates from `EPSG:2263` to `EPSG:4326`
-- optionally clip by WGS84 bounding box
-- export height-aware GeoJSON
-- run the same flow from the installed `nyc-mesh` CLI
-
-Everything else stays scaffolded with explicit `NotImplementedError`
-placeholders until the implementation is real.
+- optionally clip buildings by WGS84 bounding box
+- join PLUTO-style footprint attributes onto extracted buildings
+- generate lightweight terrain meshes from DEM or LiDAR inputs
+- export GeoJSON, GeoParquet, glTF, and a minimal 3D Tiles package
+- run the CityGML happy path from the installed CLI
 
 ## Why this exists
 
@@ -37,7 +36,7 @@ This package aims to make the first useful workflow feel like:
 
 1. point at a CityGML source file
 2. extract and clip the buildings you care about
-3. export a web-friendly GeoJSON artifact
+3. export web-friendly artifacts or analysis-ready files
 
 ## Quickstart
 
@@ -53,17 +52,27 @@ Export GeoJSON from CityGML:
 nyc-mesh export-geojson --input sample.gml --output buildings.geojson
 ```
 
+## Examples
+
+`examples/` now follows the same self-contained project pattern used by
+`nyc311`. Start with:
+
+- `examples/quickstart-citygml/`
+- `examples/neighborhood-clip/`
+- `examples/building-height-analysis/`
+- `examples/example-template/`
+
 ## Python example
 
 ```python
 from pathlib import Path
 
-from nyc_mesh import BoundingBox, export_citygml_geojson
+from nyc_mesh import models, pipeline
 
-export_citygml_geojson(
+pipeline.export_citygml_geojson(
     Path("sample.gml"),
     Path("buildings.geojson"),
-    bbox=BoundingBox(
+    bbox=models.BoundingBox(
         min_lat=40.70,
         min_lon=-74.02,
         max_lat=40.72,
@@ -74,7 +83,7 @@ export_citygml_geojson(
 
 ## Current assumptions
 
-The implemented `0.1` path is intentionally narrow:
+The CityGML happy path is intentionally opinionated:
 
 - local CityGML files only
 - only buildings with `bldg:measuredHeight`
@@ -82,10 +91,8 @@ The implemented `0.1` path is intentionally narrow:
 - outputs are reprojected to `EPSG:4326`
 - optional clipping uses a WGS84 bounding box
 
-## Notebook walkthrough
-
-The repo includes a small reproducible notebook at
-`notebooks/dumbo-citygml-geojson-walkthrough.ipynb` for the current happy path.
+LiDAR, DEM, PLUTO joins, and richer exports are implemented as practical
+building blocks, but the examples keep the data slices intentionally small.
 
 ## Documentation
 
@@ -98,9 +105,9 @@ The repo includes a small reproducible notebook at
 Docs: [Home](https://nyc-mesh.readthedocs.io/en/latest/),
 [Getting Started](https://nyc-mesh.readthedocs.io/en/latest/getting-started/),
 [CLI Reference](https://nyc-mesh.readthedocs.io/en/latest/cli/),
-[SDK Guide](https://nyc-mesh.readthedocs.io/en/latest/sdk/),
+[Pipeline Guide](https://nyc-mesh.readthedocs.io/en/latest/sdk/),
 [Architecture](https://nyc-mesh.readthedocs.io/en/latest/architecture/),
-[Notebooks](https://nyc-mesh.readthedocs.io/en/latest/notebooks/),
+[Examples](https://nyc-mesh.readthedocs.io/en/latest/examples/),
 [Python API](https://nyc-mesh.readthedocs.io/en/latest/api/),
 [Contributing](https://nyc-mesh.readthedocs.io/en/latest/contributing/),
 [Releasing](https://nyc-mesh.readthedocs.io/en/latest/releasing/),

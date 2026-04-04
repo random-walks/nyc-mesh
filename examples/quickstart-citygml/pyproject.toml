@@ -1,0 +1,9 @@
+[project]
+name = "nyc-mesh-quickstart-citygml"
+version = "0.0.0"
+description = "Quickstart CityGML example for nyc-mesh."
+requires-python = ">=3.11"
+dependencies = ["nyc-mesh"]
+
+[tool.uv.sources]
+nyc-mesh = { path = "../..", editable = true }

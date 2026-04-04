@@ -27,14 +27,14 @@ make ci
 ## Repository standards
 
 - keep implemented behavior narrow, reproducible, and honest
-- preserve explicit `NotImplementedError` placeholders for planned surfaces
+- prefer small, working examples over notebook-only walkthroughs
 - update docs alongside package exports
 - keep large raw source data out of git
 
 ## Docs and API surface
 
-- `docs/api.md` is generated from the top-level `nyc_mesh` namespace
-- `scripts/audit_public_api.py` checks that the documented public namespace and
+- `docs/api.md` is generated from the documented `nyc_mesh.*` public modules
+- `scripts/audit_public_api.py` checks that the documented public modules and
   `__all__` exports stay aligned
 - archived planning material lives under `docs/og-context/` and is intentionally
   kept out of the public docs navigation

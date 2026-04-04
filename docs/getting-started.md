@@ -37,12 +37,12 @@ nyc-mesh export-geojson \
 ```python
 from pathlib import Path
 
-from nyc_mesh import BoundingBox, export_citygml_geojson
+from nyc_mesh import models, pipeline
 
-export_citygml_geojson(
+pipeline.export_citygml_geojson(
     Path("sample.gml"),
     Path("buildings.geojson"),
-    bbox=BoundingBox(
+    bbox=models.BoundingBox(
         min_lat=40.70,
         min_lon=-74.02,
         max_lat=40.72,
@@ -51,9 +51,17 @@ export_citygml_geojson(
 )
 ```
 
+## More than GeoJSON
+
+The same extracted buildings can also feed:
+
+- `nyc_mesh.export.export_geoparquet()` for analysis workflows
+- `nyc_mesh.export.export_gltf()` for lightweight 3D viewers
+- `nyc_mesh.export.export_3d_tiles()` for a minimal Cesium package
+
 ## Current assumptions
 
-The implemented `0.1` path is intentionally narrow:
+The CityGML happy path is intentionally opinionated:
 
 - local CityGML files only
 - buildings must expose `bldg:measuredHeight`

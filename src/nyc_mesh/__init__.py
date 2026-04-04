@@ -1,56 +1,9 @@
-"""Top-level package for the current and planned ``nyc-mesh`` API surface.
-
-The repository now ships a small real extraction path while keeping future
-layers explicit as typed placeholders.
-"""
+"""Minimal root namespace for the ``nyc-mesh`` package."""
 
 from __future__ import annotations
 
-try:
-    from ._version import version as __version__
-except ImportError:  # pragma: no cover - fallback for editable installs
-    __version__ = "0+unknown"
-
-from .cli import main
-from .exporters import export_3d_tiles, export_geojson, export_geoparquet, export_gltf
-from .loaders import load_citygml, load_dem, load_footprints, load_lidar
-from .models import (
-    BoundingBox,
-    BuildingFeature,
-    CityGMLBuilding,
-    CityGMLDataset,
-    ExportTarget,
-    NeighborhoodRequest,
-)
-from .processors import (
-    clip_to_bbox,
-    extract_buildings,
-    generate_terrain_mesh,
-    join_pluto,
-)
-from .sdk import export_citygml_geojson, extract_citygml_buildings
+from ._version import version as __version__
 
 __all__ = [
-    "BoundingBox",
-    "BuildingFeature",
-    "CityGMLBuilding",
-    "CityGMLDataset",
-    "ExportTarget",
-    "NeighborhoodRequest",
     "__version__",
-    "clip_to_bbox",
-    "export_3d_tiles",
-    "export_citygml_geojson",
-    "export_geojson",
-    "export_geoparquet",
-    "export_gltf",
-    "extract_buildings",
-    "extract_citygml_buildings",
-    "generate_terrain_mesh",
-    "join_pluto",
-    "load_citygml",
-    "load_dem",
-    "load_footprints",
-    "load_lidar",
-    "main",
 ]
