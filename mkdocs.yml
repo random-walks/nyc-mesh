@@ -58,9 +58,9 @@ nav:
   - Home: index.md
   - Getting Started: getting-started.md
   - CLI Reference: cli.md
-  - SDK Guide: sdk.md
+  - Pipeline Guide: sdk.md
   - Architecture: architecture.md
-  - Notebooks: notebooks.md
+  - Examples: examples.md
   - Python API: api.md
   - Contributing: contributing.md
   - Releasing: releasing.md

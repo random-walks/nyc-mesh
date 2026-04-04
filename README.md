@@ -12,19 +12,19 @@ Authored by [Blaise Albis-Burdige](https://blaiseab.com/).
 `nyc-mesh` focuses on the messy middle between raw public CityGML releases and
 practical outputs for browsers, notebooks, and reproducible analysis workflows.
 
-## What ships in the `0.1` line
+## What ships in the current line
 
-The current release implements one honest end-to-end path:
+The current package now includes a real official-data workflow:
 
-- load a local CityGML file
-- extract footprint and measured height
-- reproject source coordinates from `EPSG:2263` to `EPSG:4326`
-- optionally clip by WGS84 bounding box
-- export height-aware GeoJSON
-- run the same flow from the installed `nyc-mesh` CLI
-
-Everything else stays scaffolded with explicit `NotImplementedError`
-placeholders until the implementation is real.
+- load local or zip-wrapped official CityGML, LiDAR, DEM, and footprint inputs
+- fetch official PLUTO and building-footprint context for a chosen study-area
+  bbox
+- reproject CityGML source coordinates from `EPSG:2263` to `EPSG:4326`
+- clip buildings to named study areas or explicit WGS84 bounding boxes
+- join PLUTO-style attributes onto extracted buildings
+- generate lightweight terrain meshes from official DEM or LiDAR inputs
+- export GeoJSON, GeoParquet, glTF, and a minimal 3D Tiles package
+- build typed cache manifests for real study areas
 
 ## Why this exists
 
@@ -37,7 +37,7 @@ This package aims to make the first useful workflow feel like:
 
 1. point at a CityGML source file
 2. extract and clip the buildings you care about
-3. export a web-friendly GeoJSON artifact
+3. export web-friendly artifacts or analysis-ready files
 
 ## Quickstart
 
@@ -47,23 +47,33 @@ Install:
 pip install nyc-mesh
 ```
 
-Export GeoJSON from CityGML:
+Export GeoJSON from a real CityGML source:
 
 ```bash
-nyc-mesh export-geojson --input sample.gml --output buildings.geojson
+nyc-mesh export-geojson --input "C:/path/to/DA_WISE_GML.zip" --output buildings.geojson
 ```
+
+## Examples
+
+`examples/` now follows the same self-contained project pattern used by
+`nyc311`. Start with:
+
+- `examples/quickstart-citygml/`
+- `examples/landmark-3d-stack/`
+- `examples/building-height-analysis/`
+- `examples/example-template/`
 
 ## Python example
 
 ```python
 from pathlib import Path
 
-from nyc_mesh import BoundingBox, export_citygml_geojson
+from nyc_mesh import models, pipeline
 
-export_citygml_geojson(
-    Path("sample.gml"),
+pipeline.export_citygml_geojson(
+    Path("C:/path/to/DA_WISE_GML.zip"),
     Path("buildings.geojson"),
-    bbox=BoundingBox(
+    bbox=models.BoundingBox(
         min_lat=40.70,
         min_lon=-74.02,
         max_lat=40.72,
@@ -74,18 +84,18 @@ export_citygml_geojson(
 
 ## Current assumptions
 
-The implemented `0.1` path is intentionally narrow:
+The official-data workflow is intentionally opinionated:
 
-- local CityGML files only
+- large CityGML / DEM / LiDAR archives stay out of git and are treated as local
+  cache assets
 - only buildings with `bldg:measuredHeight`
 - source coordinates are treated as `EPSG:2263`
 - outputs are reprojected to `EPSG:4326`
 - optional clipping uses a WGS84 bounding box
 
-## Notebook walkthrough
-
-The repo includes a small reproducible notebook at
-`notebooks/dumbo-citygml-geojson-walkthrough.ipynb` for the current happy path.
+PLUTO joins, real footprints, and terrain inputs are treated as practical
+building blocks, while the examples document exactly which official sources or
+local cache paths they need.
 
 ## Documentation
 
@@ -98,9 +108,9 @@ The repo includes a small reproducible notebook at
 Docs: [Home](https://nyc-mesh.readthedocs.io/en/latest/),
 [Getting Started](https://nyc-mesh.readthedocs.io/en/latest/getting-started/),
 [CLI Reference](https://nyc-mesh.readthedocs.io/en/latest/cli/),
-[SDK Guide](https://nyc-mesh.readthedocs.io/en/latest/sdk/),
+[Pipeline Guide](https://nyc-mesh.readthedocs.io/en/latest/sdk/),
 [Architecture](https://nyc-mesh.readthedocs.io/en/latest/architecture/),
-[Notebooks](https://nyc-mesh.readthedocs.io/en/latest/notebooks/),
+[Examples](https://nyc-mesh.readthedocs.io/en/latest/examples/),
 [Python API](https://nyc-mesh.readthedocs.io/en/latest/api/),
 [Contributing](https://nyc-mesh.readthedocs.io/en/latest/contributing/),
 [Releasing](https://nyc-mesh.readthedocs.io/en/latest/releasing/),

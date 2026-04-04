@@ -39,8 +39,12 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
+  "laspy>=2.7.0",
   "lxml>=6.0.2",
+  "pyarrow>=23.0.1",
   "pyproj>=3.7.2",
+  "pyshp>=3.0.3",
+  "rasterio>=1.4.4",
 ]
 
 [project.scripts]
@@ -134,6 +138,10 @@ disallow_incomplete_defs = true
 module = "lxml.*"
 ignore_missing_imports = true
 
+[[tool.mypy.overrides]]
+module = ["laspy", "shapefile", "pyarrow", "pyarrow.*", "rasterio", "rasterio.*"]
+ignore_missing_imports = true
+
 
 [tool.ruff]
 show-fixes = true
@@ -185,11 +193,12 @@ ignore = [
 # typing-modules = ["nyc_mesh._compat.typing"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["T20"]
+"tests/**" = ["T20", "TC001", "TC002", "TC003"]
 "noxfile.py" = ["EXE001", "T20"]
 "src/nyc_mesh/__main__.py" = ["I001"]
+"src/nyc_mesh/cli/_main.py" = ["I001"]
 "scripts/*.py" = ["EM", "TRY", "F541"]
-"docs/examples/**" = ["T20"]
+"examples/**" = ["T20"]
 
 
 [tool.pylint]
@@ -197,7 +206,7 @@ py-version = "3.11"
 ignore-paths = [".*/_version.py"]
 reports.output-format = "colorized"
 similarities.ignore-imports = "yes"
-extension-pkg-allow-list = ["lxml"]
+extension-pkg-allow-list = ["lxml", "pyarrow"]
 messages_control.disable = [
   "design",
   "duplicate-code",

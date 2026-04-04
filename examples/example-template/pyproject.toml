@@ -1,0 +1,9 @@
+[project]
+name = "nyc-mesh-example-template"
+version = "0.0.0"
+description = "Bootstrap template for self-contained nyc-mesh examples."
+requires-python = ">=3.11"
+dependencies = ["nyc-mesh"]
+
+[tool.uv.sources]
+nyc-mesh = { path = "../..", editable = true }

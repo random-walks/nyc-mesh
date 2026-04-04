@@ -1,19 +1,16 @@
 # API surface
 
-`nyc-mesh` now has a mixed surface:
-
-- implemented v0.1 happy-path functions
-- implemented v0.1 SDK convenience helpers
-- planned functions that intentionally raise `NotImplementedError`
+`nyc-mesh` now has a subpackage-first public surface with a minimal root
+namespace.
 
 ## Implemented in v0.1
 
-- `nyc_mesh.loaders.load_citygml`
-- `nyc_mesh.processors.extract_buildings`
-- `nyc_mesh.processors.clip_to_bbox`
-- `nyc_mesh.exporters.export_geojson`
-- `nyc_mesh.sdk.extract_citygml_buildings`
-- `nyc_mesh.sdk.export_citygml_geojson`
+- `nyc_mesh.io.load_citygml`
+- `nyc_mesh.analysis.extract_buildings`
+- `nyc_mesh.analysis.clip_to_bbox`
+- `nyc_mesh.export.export_geojson`
+- `nyc_mesh.pipeline.extract_citygml_buildings`
+- `nyc_mesh.pipeline.export_citygml_geojson`
 
 These implement the first narrow pipeline:
 
@@ -27,7 +24,7 @@ The same path is now available through the installed CLI:
 
 ```bash
 nyc-mesh export-geojson \
-  --input sample.gml \
+  --input "C:/path/to/DA_WISE_GML.zip" \
   --output buildings.geojson \
   --min-lat 40.70 --min-lon -74.02 \
   --max-lat 40.72 --max-lon -73.99
@@ -40,18 +37,18 @@ Notes:
 - The current v0.1 implementation assumes source coordinates are in `EPSG:2263`
   and reprojects them to WGS84 (`EPSG:4326`) before clipping and export.
 
-The same path is also available through a small SDK-style surface for notebooks
-and data pipelines:
+The same path is also available through a small pipeline surface for scripts and
+data workflows:
 
 ```python
 from pathlib import Path
 
-from nyc_mesh import BoundingBox, export_citygml_geojson
+from nyc_mesh import models, pipeline
 
-export_citygml_geojson(
-    Path("sample.gml"),
+pipeline.export_citygml_geojson(
+    Path("C:/path/to/DA_WISE_GML.zip"),
     Path("buildings.geojson"),
-    bbox=BoundingBox(
+    bbox=models.BoundingBox(
         min_lat=40.70,
         min_lon=-74.02,
         max_lat=40.72,
@@ -60,14 +57,11 @@ export_citygml_geojson(
 )
 ```
 
-## Still planned (explicit placeholders)
+## Additional implemented surfaces
 
 - Loaders: `load_lidar`, `load_dem`, `load_footprints`
-- Processors: `join_pluto`, `generate_terrain_mesh`
+- Analysis: `join_pluto`, `generate_terrain_mesh`
 - Exporters: `export_3d_tiles`, `export_geoparquet`, `export_gltf`
-
-Planned functions are kept importable and typed so contributors can extend the
-target shape without guessing.
 
 ## Models
 
@@ -75,19 +69,19 @@ target shape without guessing.
 
 ## Loaders
 
-::: nyc_mesh.loaders
+::: nyc_mesh.io
 
 ## Processors
 
-::: nyc_mesh.processors
+::: nyc_mesh.analysis
 
 ## Exporters
 
-::: nyc_mesh.exporters
+::: nyc_mesh.export
 
 ## SDK
 
-::: nyc_mesh.sdk
+::: nyc_mesh.pipeline
 
 ## CLI
 
