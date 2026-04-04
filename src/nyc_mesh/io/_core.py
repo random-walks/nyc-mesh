@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import csv
 import json
+import zipfile
+from io import BytesIO
 from pathlib import Path
 from typing import Any, cast
 
@@ -27,6 +29,13 @@ except ImportError:  # pragma: no cover - fallback for environments without lasp
     laspy = None
 
 try:  # pragma: no cover - exercised when dependency is installed
+    import rasterio
+    from rasterio.io import MemoryFile
+except ImportError:  # pragma: no cover - fallback for environments without rasterio
+    rasterio = None
+    MemoryFile = None
+
+try:  # pragma: no cover - exercised when dependency is installed
     import shapefile
 except ImportError:  # pragma: no cover - fallback for environments without pyshp
     shapefile = None
@@ -36,6 +45,15 @@ _NS = {
     "gml": "http://www.opengis.net/gml",
 }
 _GML_ID = "{http://www.opengis.net/gml}id"
+
+
+def _zip_members(source_path: Path, *, suffixes: tuple[str, ...]) -> tuple[str, bytes]:
+    with zipfile.ZipFile(source_path) as archive:
+        for member_name in archive.namelist():
+            if member_name.lower().endswith(suffixes):
+                return member_name, archive.read(member_name)
+    message = f"{source_path} does not contain a member ending with {suffixes!r}."
+    raise ValueError(message)
 
 
 def _parse_float_values(raw_values: str) -> tuple[float, ...]:
@@ -138,13 +156,16 @@ def load_citygml(source: str | Path) -> CityGMLDataset:
     if not source_path.is_file():
         message = f"CityGML source must be a file path: {source_path}"
         raise ValueError(message)
-
     parser = etree.XMLParser(
         resolve_entities=False,
         no_network=True,
         remove_comments=True,
     )
-    root = etree.parse(str(source_path), parser=parser).getroot()
+    if source_path.suffix.lower() == ".zip":
+        _, member_bytes = _zip_members(source_path, suffixes=(".gml", ".xml"))
+        root = etree.fromstring(member_bytes, parser=parser)
+    else:
+        root = etree.parse(str(source_path), parser=parser).getroot()
 
     buildings: list[CityGMLBuilding] = []
     for building_node in cast(
@@ -208,6 +229,24 @@ def load_lidar(source: str | Path) -> LidarDataset:
         raise FileNotFoundError(message)
 
     suffix = source_path.suffix.lower()
+    if suffix == ".zip":
+        if laspy is None:
+            message = "ZIP-wrapped LAS/LAZ loading requires the optional `laspy` dependency."
+            raise RuntimeError(message)
+        _, member_bytes = _zip_members(source_path, suffixes=(".las", ".laz"))
+        las = laspy.read(BytesIO(member_bytes))
+        points = tuple(
+            LidarPoint(
+                x=float(x_coord),
+                y=float(y_coord),
+                z=float(z_coord),
+                intensity=None if las.intensity is None else int(las.intensity[index]),
+            )
+            for index, (x_coord, y_coord, z_coord) in enumerate(
+                zip(las.x, las.y, las.z, strict=True)
+            )
+        )
+        return LidarDataset(source=source_path.resolve(), points=points)
     if suffix in {".las", ".laz"}:
         if laspy is None:
             message = "LAS/LAZ loading requires the optional `laspy` dependency."
@@ -263,6 +302,23 @@ def load_dem(source: str | Path) -> DEMDataset:
         raise FileNotFoundError(message)
 
     suffix = source_path.suffix.lower()
+    if suffix == ".zip":
+        member_name, member_bytes = _zip_members(source_path, suffixes=(".tif", ".tiff", ".asc"))
+        member_suffix = Path(member_name).suffix.lower()
+        if member_suffix in {".tif", ".tiff"}:
+            if rasterio is None or MemoryFile is None:
+                message = "GeoTIFF DEM loading requires the optional `rasterio` dependency."
+                raise RuntimeError(message)
+            with MemoryFile(member_bytes) as memory_file, memory_file.open() as dataset:
+                return _dem_from_rasterio(dataset, source_path)
+        return _dem_from_ascii_text(member_bytes.decode("utf-8"), source_path)
+
+    if suffix in {".tif", ".tiff"}:
+        if rasterio is None:
+            message = "GeoTIFF DEM loading requires the optional `rasterio` dependency."
+            raise RuntimeError(message)
+        with rasterio.open(source_path) as dataset:
+            return _dem_from_rasterio(dataset, source_path)
     if suffix == ".json":
         payload = json.loads(source_path.read_text(encoding="utf-8"))
         values = tuple(
@@ -282,8 +338,11 @@ def load_dem(source: str | Path) -> DEMDataset:
     if suffix != ".asc":
         message = f"Unsupported DEM format: {source_path.suffix}"
         raise ValueError(message)
+    return _dem_from_ascii_text(source_path.read_text(encoding="utf-8"), source_path)
 
-    lines = [line.strip() for line in source_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+def _dem_from_ascii_text(raw_text: str, source_path: Path) -> DEMDataset:
+    lines = [line.strip() for line in raw_text.splitlines() if line.strip()]
     header: dict[str, str] = {}
     for line in lines[:6]:
         key, value = line.split(maxsplit=1)
@@ -317,8 +376,34 @@ def load_dem(source: str | Path) -> DEMDataset:
     )
 
 
+def _dem_from_rasterio(dataset: Any, source_path: Path) -> DEMDataset:
+    band = dataset.read(1)
+    nodata = dataset.nodata
+    values = tuple(
+        tuple(
+            None if nodata is not None and float(value) == float(nodata) else float(value)
+            for value in row
+        )
+        for row in band
+    )
+    transform = dataset.transform
+    return DEMDataset(
+        source=source_path.resolve(),
+        values=values,
+        origin_x=float(transform.c),
+        origin_y=float(transform.f),
+        cell_size=float(transform.a),
+        nodata=None if nodata is None else float(nodata),
+        crs=str(dataset.crs or "EPSG:2263"),
+    )
+
+
 def _coerce_geojson_ring(raw_coordinates: list[Any]) -> tuple[Coordinate2D, ...]:
-    ring = tuple((float(point[0]), float(point[1])) for point in raw_coordinates if len(point) >= 2)
+    ring = tuple(
+        (float(point[0]), float(point[1]))
+        for point in raw_coordinates
+        if len(point) >= 2
+    )
     normalized = normalise_ring(ring)
     if not normalized:
         return ()
@@ -326,6 +411,22 @@ def _coerce_geojson_ring(raw_coordinates: list[Any]) -> tuple[Coordinate2D, ...]
     if abs(first_lon) > 180 or abs(first_lat) > 90:
         return project_ring_to_wgs84(normalized)
     return normalized
+
+
+def _coerce_geojson_footprint(geometry: dict[str, Any]) -> tuple[Coordinate2D, ...]:
+    geometry_type = geometry.get("type")
+    coordinates = geometry.get("coordinates")
+    if not isinstance(coordinates, list) or not coordinates:
+        return ()
+    if geometry_type == "Polygon":
+        first_ring = coordinates[0]
+        return _coerce_geojson_ring(first_ring) if isinstance(first_ring, list) else ()
+    if geometry_type == "MultiPolygon":
+        first_polygon = coordinates[0]
+        if isinstance(first_polygon, list) and first_polygon:
+            first_ring = first_polygon[0]
+            return _coerce_geojson_ring(first_ring) if isinstance(first_ring, list) else ()
+    return ()
 
 
 def load_footprints(source: str | Path) -> FootprintDataset:
@@ -349,12 +450,9 @@ def load_footprints(source: str | Path) -> FootprintDataset:
                 continue
             geometry = feature.get("geometry")
             properties = feature.get("properties", {})
-            if not isinstance(geometry, dict) or geometry.get("type") != "Polygon":
+            if not isinstance(geometry, dict):
                 continue
-            coordinates = geometry.get("coordinates")
-            if not isinstance(coordinates, list) or not coordinates:
-                continue
-            ring = _coerce_geojson_ring(coordinates[0])
+            ring = _coerce_geojson_footprint(geometry)
             if not ring:
                 continue
             feature_id = str(

@@ -7,7 +7,6 @@ The supported public contract is now subpackage-first:
 - `nyc_mesh.analysis`
 - `nyc_mesh.export`
 - `nyc_mesh.pipeline`
-- `nyc_mesh.samples`
 - `nyc_mesh.cli`
 
 The root `nyc_mesh` namespace is intentionally minimal and only exposes
@@ -36,10 +35,6 @@ The root `nyc_mesh` namespace is intentionally minimal and only exposes
 ## Pipeline
 
 ::: nyc_mesh.pipeline
-
-## Samples
-
-::: nyc_mesh.samples
 
 ## CLI
 

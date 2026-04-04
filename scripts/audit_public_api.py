@@ -24,7 +24,6 @@ PUBLIC_MODULES: Final[tuple[str, ...]] = (
     "nyc_mesh.io",
     "nyc_mesh.models",
     "nyc_mesh.pipeline",
-    "nyc_mesh.samples",
 )
 DOC_DIRECTIVE_RE: Final[re.Pattern[str]] = re.compile(
     r"^:::\s+(nyc_mesh(?:\.[a-z_]+)?)\s*$"

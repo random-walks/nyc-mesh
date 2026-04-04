@@ -1,9 +1,9 @@
 [project]
 name = "nyc-mesh-building-height-analysis"
 version = "0.0.0"
-description = "Building height and terrain export example for nyc-mesh."
+description = "Real building height analysis example for nyc-mesh."
 requires-python = ">=3.11"
-dependencies = ["nyc-mesh"]
+dependencies = ["matplotlib>=3.10", "nyc-mesh"]
 
 [tool.uv.sources]
 nyc-mesh = { path = "../..", editable = true }

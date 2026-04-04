@@ -14,6 +14,7 @@ def main() -> None:
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     print("nyc-mesh Example Template")
     print("This folder is a bootstrap template, not a finished example.")
+    print("Build around official cache assets or documented local archive paths.")
 
 
 if __name__ == "__main__":

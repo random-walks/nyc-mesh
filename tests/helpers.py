@@ -1,7 +1,12 @@
 from __future__ import annotations
 
 import json
+import zipfile
 from pathlib import Path
+
+import numpy as np
+import rasterio
+from rasterio.transform import from_origin
 
 from nyc_mesh import pipeline, samples
 
@@ -70,3 +75,32 @@ def write_lidar_json(path: Path) -> None:
         ),
         encoding="utf-8",
     )
+
+
+def write_citygml_zip(path: Path) -> None:
+    with zipfile.ZipFile(path, "w") as archive:
+        archive.write(sample_citygml_path(), arcname="sample.gml")
+
+
+def write_dem_tif(path: Path) -> None:
+    data = np.array(
+        [
+            [8.0, 9.0, 10.0],
+            [7.5, 8.5, 9.5],
+            [7.0, 8.0, 9.0],
+        ],
+        dtype="float32",
+    )
+    with rasterio.open(
+        path,
+        "w",
+        driver="GTiff",
+        height=data.shape[0],
+        width=data.shape[1],
+        count=1,
+        dtype=data.dtype,
+        crs="EPSG:2263",
+        transform=from_origin(981000, 190150, 50, 50),
+        nodata=-9999,
+    ) as dataset:
+        dataset.write(data, 1)

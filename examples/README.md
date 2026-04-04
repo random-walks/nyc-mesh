@@ -1,6 +1,7 @@
 # Examples
 
-`examples/` contains self-contained consumer projects instead of notebooks.
+`examples/` contains self-contained consumer projects instead of notebooks, and
+they are designed around official public datasets and local cache manifests.
 
 ## Contract
 
@@ -22,3 +23,10 @@ Each example must:
 
 Examples are intentionally not part of the main CI runtime path. They are
 consumer references, not package fixtures.
+
+## Start Here
+
+- `examples/quickstart-citygml/`
+- `examples/landmark-3d-stack/`
+- `examples/building-height-analysis/`
+- `examples/example-template/`

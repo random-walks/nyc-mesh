@@ -24,7 +24,7 @@ The same path is now available through the installed CLI:
 
 ```bash
 nyc-mesh export-geojson \
-  --input sample.gml \
+  --input "C:/path/to/DA_WISE_GML.zip" \
   --output buildings.geojson \
   --min-lat 40.70 --min-lon -74.02 \
   --max-lat 40.72 --max-lon -73.99
@@ -46,7 +46,7 @@ from pathlib import Path
 from nyc_mesh import models, pipeline
 
 pipeline.export_citygml_geojson(
-    Path("sample.gml"),
+    Path("C:/path/to/DA_WISE_GML.zip"),
     Path("buildings.geojson"),
     bbox=models.BoundingBox(
         min_lat=40.70,

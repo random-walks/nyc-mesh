@@ -14,17 +14,17 @@ For local development:
 make install-dev
 ```
 
-## Export GeoJSON from CityGML
+## Export GeoJSON from official CityGML
 
 ```bash
-nyc-mesh export-geojson --input sample.gml --output buildings.geojson
+nyc-mesh export-geojson --input "C:/path/to/DA_WISE_GML.zip" --output buildings.geojson
 ```
 
 You can also clip to a WGS84 bounding box:
 
 ```bash
 nyc-mesh export-geojson \
-  --input sample.gml \
+  --input "C:/path/to/DA_WISE_GML.zip" \
   --output buildings.geojson \
   --min-lat 40.70 \
   --min-lon -74.02 \
@@ -40,7 +40,7 @@ from pathlib import Path
 from nyc_mesh import models, pipeline
 
 pipeline.export_citygml_geojson(
-    Path("sample.gml"),
+    Path("C:/path/to/DA_WISE_GML.zip"),
     Path("buildings.geojson"),
     bbox=models.BoundingBox(
         min_lat=40.70,
@@ -61,9 +61,9 @@ The same extracted buildings can also feed:
 
 ## Current assumptions
 
-The CityGML happy path is intentionally opinionated:
+The official-data workflow is intentionally opinionated:
 
-- local CityGML files only
+- large official archives are expected to live in a local cache path
 - buildings must expose `bldg:measuredHeight`
 - source coordinates are treated as `EPSG:2263`
 - outputs are reprojected to `EPSG:4326`

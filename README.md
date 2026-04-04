@@ -14,16 +14,16 @@ practical outputs for browsers, notebooks, and reproducible analysis workflows.
 
 ## What ships in the current line
 
-The current package now includes a broader but still honest toolkit:
+The current package now includes a real official-data workflow:
 
-- load CityGML, LiDAR, DEM, and footprint inputs
-- extract footprint and measured height from CityGML
-- reproject source coordinates from `EPSG:2263` to `EPSG:4326`
-- optionally clip buildings by WGS84 bounding box
-- join PLUTO-style footprint attributes onto extracted buildings
-- generate lightweight terrain meshes from DEM or LiDAR inputs
+- load local or zip-wrapped official CityGML, LiDAR, DEM, and footprint inputs
+- fetch official PLUTO and building-footprint context for a chosen study-area bbox
+- reproject CityGML source coordinates from `EPSG:2263` to `EPSG:4326`
+- clip buildings to named study areas or explicit WGS84 bounding boxes
+- join PLUTO-style attributes onto extracted buildings
+- generate lightweight terrain meshes from official DEM or LiDAR inputs
 - export GeoJSON, GeoParquet, glTF, and a minimal 3D Tiles package
-- run the CityGML happy path from the installed CLI
+- build typed cache manifests for real study areas
 
 ## Why this exists
 
@@ -46,10 +46,10 @@ Install:
 pip install nyc-mesh
 ```
 
-Export GeoJSON from CityGML:
+Export GeoJSON from a real CityGML source:
 
 ```bash
-nyc-mesh export-geojson --input sample.gml --output buildings.geojson
+nyc-mesh export-geojson --input "C:/path/to/DA_WISE_GML.zip" --output buildings.geojson
 ```
 
 ## Examples
@@ -58,7 +58,7 @@ nyc-mesh export-geojson --input sample.gml --output buildings.geojson
 `nyc311`. Start with:
 
 - `examples/quickstart-citygml/`
-- `examples/neighborhood-clip/`
+- `examples/landmark-3d-stack/`
 - `examples/building-height-analysis/`
 - `examples/example-template/`
 
@@ -70,7 +70,7 @@ from pathlib import Path
 from nyc_mesh import models, pipeline
 
 pipeline.export_citygml_geojson(
-    Path("sample.gml"),
+    Path("C:/path/to/DA_WISE_GML.zip"),
     Path("buildings.geojson"),
     bbox=models.BoundingBox(
         min_lat=40.70,
@@ -83,16 +83,17 @@ pipeline.export_citygml_geojson(
 
 ## Current assumptions
 
-The CityGML happy path is intentionally opinionated:
+The official-data workflow is intentionally opinionated:
 
-- local CityGML files only
+- large CityGML / DEM / LiDAR archives stay out of git and are treated as local cache assets
 - only buildings with `bldg:measuredHeight`
 - source coordinates are treated as `EPSG:2263`
 - outputs are reprojected to `EPSG:4326`
 - optional clipping uses a WGS84 bounding box
 
-LiDAR, DEM, PLUTO joins, and richer exports are implemented as practical
-building blocks, but the examples keep the data slices intentionally small.
+PLUTO joins, real footprints, and terrain inputs are treated as practical
+building blocks, while the examples document exactly which official sources or
+local cache paths they need.
 
 ## Documentation
 

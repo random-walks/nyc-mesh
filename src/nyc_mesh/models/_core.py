@@ -6,6 +6,7 @@ from dataclasses import dataclass, field, replace
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from datetime import datetime
     from pathlib import Path
 
 Coordinate2D = tuple[float, float]
@@ -173,3 +174,30 @@ class TerrainMeshDataset:
     source: str
     vertices: tuple[Coordinate3D, ...]
     triangles: tuple[tuple[int, int, int], ...]
+
+
+@dataclass(frozen=True, slots=True)
+class DataSourceMetadata:
+    """Metadata describing one cached or user-staged public dataset."""
+
+    name: str
+    source_url: str
+    cache_path: Path
+    refreshed_at: datetime
+    record_count: int
+    notes: str = ""
+
+
+@dataclass(frozen=True, slots=True)
+class StudyAreaAssetManifest:
+    """Manifest of the official assets used for one mesh study area."""
+
+    study_area_name: str
+    bbox: BoundingBox
+    cache_dir: Path
+    citygml_source: Path
+    metadata: tuple[DataSourceMetadata, ...]
+    footprints_source: Path | None = None
+    pluto_source: Path | None = None
+    dem_source: Path | None = None
+    lidar_source: Path | None = None

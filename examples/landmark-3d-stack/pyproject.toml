@@ -1,7 +1,7 @@
 [project]
-name = "nyc-mesh-neighborhood-clip"
+name = "nyc-mesh-landmark-3d-stack"
 version = "0.0.0"
-description = "Neighborhood clip example for nyc-mesh."
+description = "Real landmark-scale 3D stack example for nyc-mesh."
 requires-python = ">=3.11"
 dependencies = ["nyc-mesh"]
 

@@ -9,6 +9,7 @@ from ._core import (
     CityGMLDataset,
     Coordinate2D,
     Coordinate3D,
+    DataSourceMetadata,
     DEMDataset,
     ExportTarget,
     FootprintDataset,
@@ -17,6 +18,7 @@ from ._core import (
     LidarPoint,
     NeighborhoodRequest,
     ScalarValue,
+    StudyAreaAssetManifest,
     TerrainMeshDataset,
 )
 
@@ -28,6 +30,7 @@ __all__ = [
     "Coordinate2D",
     "Coordinate3D",
     "DEMDataset",
+    "DataSourceMetadata",
     "ExportTarget",
     "FootprintDataset",
     "FootprintFeature",
@@ -35,5 +38,6 @@ __all__ = [
     "LidarPoint",
     "NeighborhoodRequest",
     "ScalarValue",
+    "StudyAreaAssetManifest",
     "TerrainMeshDataset",
 ]

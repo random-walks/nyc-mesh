@@ -5,14 +5,14 @@ The installed `nyc-mesh` command currently exposes one implemented workflow.
 ## `nyc-mesh export-geojson`
 
 ```bash
-nyc-mesh export-geojson --input sample.gml --output buildings.geojson
+nyc-mesh export-geojson --input "C:/path/to/DA_WISE_GML.zip" --output buildings.geojson
 ```
 
 Clip to a WGS84 bounding box by passing all four bbox flags:
 
 ```bash
 nyc-mesh export-geojson \
-  --input sample.gml \
+  --input "C:/path/to/DA_WISE_GML.zip" \
   --output buildings.geojson \
   --min-lat 40.70 \
   --min-lon -74.02 \

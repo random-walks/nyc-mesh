@@ -1,13 +1,11 @@
 # Building Height Analysis
 
-This example pairs the packaged sample buildings with tiny synthetic elevation
-inputs to exercise the terrain and 3D export surfaces.
+This example uses a real official CityGML source and produces tracked
+multi-angle matplotlib views for a famous-building study area.
 
-Outputs:
+## Run
 
-- `cache/sample-dem.json`
-- `cache/sample-lidar.json`
-- `artifacts/buildings.parquet`
-- `artifacts/terrain.gltf`
-- `artifacts/tileset.json`
-- `reports/building-height-analysis-tearsheet.md`
+```bash
+uv sync
+uv run python main.py --citygml-path "C:/path/to/DA_WISE_GML.zip"
+```
