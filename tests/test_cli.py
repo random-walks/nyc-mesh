@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from nyc_mesh.cli import main
-from tests.helpers import sample_citygml_path
+from tests.test_helpers import sample_citygml_path
 
 
 def test_cli_export_geojson_with_bbox(

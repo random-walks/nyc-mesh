@@ -9,7 +9,7 @@ import pytest
 from nyc_mesh import pipeline
 from nyc_mesh.io import load_footprints
 from nyc_mesh.models import BoundingBox
-from tests.helpers import sample_citygml_path
+from tests.test_helpers import sample_citygml_path
 
 
 def test_pipeline_helpers_export_geojson_and_geoparquet(tmp_path: Path) -> None:

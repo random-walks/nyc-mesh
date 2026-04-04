@@ -6,7 +6,7 @@ import pytest
 
 from nyc_mesh.io import load_citygml, load_dem, load_footprints, load_lidar
 from nyc_mesh.samples import load_sample_citygml
-from tests.helpers import (
+from tests.test_helpers import (
     sample_citygml_path,
     write_citygml_zip,
     write_dem_json,

@@ -8,7 +8,7 @@ import pyarrow.parquet as pq
 from nyc_mesh import analysis, export, pipeline
 from nyc_mesh.io import load_dem
 from nyc_mesh.models import ExportTarget
-from tests.helpers import sample_citygml_path, write_dem_json
+from tests.test_helpers import sample_citygml_path, write_dem_json
 
 
 def test_export_geojson_geoparquet_gltf_and_3d_tiles(tmp_path: Path) -> None:

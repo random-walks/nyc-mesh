@@ -5,7 +5,7 @@ from pathlib import Path
 from nyc_mesh import analysis, pipeline
 from nyc_mesh.io import load_dem, load_footprints, load_lidar
 from nyc_mesh.models import BoundingBox
-from tests.helpers import (
+from tests.test_helpers import (
     sample_citygml_path,
     write_dem_json,
     write_footprints_geojson,
