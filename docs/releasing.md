@@ -28,7 +28,8 @@ That covers:
 - lint, typing, and public API checks
 - docs build validation
 - source and wheel builds
-- installed-wheel smoke testing for the CLI and a known-good local CityGML workflow
+- installed-wheel smoke testing for the CLI and a known-good local CityGML
+  workflow
 
 ## Publishing configuration
 
@@ -60,7 +61,8 @@ After the release lands on PyPI:
 
 1. Install `nyc-mesh` from PyPI in a clean environment.
 2. Run `nyc-mesh --help`.
-3. Run `nyc-mesh export-geojson --input "C:/path/to/DA_WISE_GML.zip" --output buildings.geojson`
+3. Run
+   `nyc-mesh export-geojson --input "C:/path/to/DA_WISE_GML.zip" --output buildings.geojson`
    with a known-good official or pinned local CityGML input.
 4. Confirm the PyPI project page renders the README correctly.
 5. Confirm the docs site, GitHub release notes, and repo sidebar links reflect

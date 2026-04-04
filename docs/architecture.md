@@ -9,20 +9,24 @@
 - `nyc_mesh.io`: CityGML, LiDAR, DEM, and footprint loaders
 - `nyc_mesh.analysis`: extraction, clipping, joins, and terrain mesh generation
 - `nyc_mesh.export`: GeoJSON, GeoParquet, glTF, and 3D Tiles outputs
-- `nyc_mesh.pipeline`: higher-level convenience helpers and study-area asset manifests
+- `nyc_mesh.pipeline`: higher-level convenience helpers and study-area asset
+  manifests
 - `nyc_mesh.cli`: installed command-line workflows
 
 ## Current data flow
 
 1. `pipeline.build_study_area_manifest()` prepares a real local cache manifest.
-2. The manifest fetches official PLUTO and building-footprint context for the selected bbox.
+2. The manifest fetches official PLUTO and building-footprint context for the
+   selected bbox.
 3. `io.load_citygml()` parses a local or zip-wrapped CityGML source with `lxml`.
 4. `analysis.extract_buildings()` reprojects source coordinates from `EPSG:2263`
    to `EPSG:4326`.
 5. `analysis.clip_to_bbox()` filters building footprints by WGS84 overlap.
-6. `analysis.join_pluto()` enriches buildings from the cached official footprints.
-7. `export.export_geojson()` / `export.export_geoparquet()` / `export.export_gltf()` /
-   `export.export_3d_tiles()` produce consumer-ready outputs.
+6. `analysis.join_pluto()` enriches buildings from the cached official
+   footprints.
+7. `export.export_geojson()` / `export.export_geoparquet()` /
+   `export.export_gltf()` / `export.export_3d_tiles()` produce consumer-ready
+   outputs.
 
 ## Data and geography conventions
 

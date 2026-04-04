@@ -17,7 +17,8 @@ practical outputs for browsers, notebooks, and reproducible analysis workflows.
 The current package now includes a real official-data workflow:
 
 - load local or zip-wrapped official CityGML, LiDAR, DEM, and footprint inputs
-- fetch official PLUTO and building-footprint context for a chosen study-area bbox
+- fetch official PLUTO and building-footprint context for a chosen study-area
+  bbox
 - reproject CityGML source coordinates from `EPSG:2263` to `EPSG:4326`
 - clip buildings to named study areas or explicit WGS84 bounding boxes
 - join PLUTO-style attributes onto extracted buildings
@@ -85,7 +86,8 @@ pipeline.export_citygml_geojson(
 
 The official-data workflow is intentionally opinionated:
 
-- large CityGML / DEM / LiDAR archives stay out of git and are treated as local cache assets
+- large CityGML / DEM / LiDAR archives stay out of git and are treated as local
+  cache assets
 - only buildings with `bldg:measuredHeight`
 - source coordinates are treated as `EPSG:2263`
 - outputs are reprojected to `EPSG:4326`

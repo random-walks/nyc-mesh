@@ -6,8 +6,7 @@
   `https://maps.nyc.gov/download/3dmodel/DA_WISE_GML.zip`
 - NYC Building Footprints API:
   `https://data.cityofnewyork.us/resource/5zhs-2jue.json`
-- NYC PLUTO API:
-  `https://data.cityofnewyork.us/resource/64uk-42ks.json`
+- NYC PLUTO API: `https://data.cityofnewyork.us/resource/64uk-42ks.json`
 - NYC 1-foot DEM dataset page:
   `https://data.cityofnewyork.us/City-Government/1-foot-Digital-Elevation-Model-DEM-/dpc8-z3jc/data?no_mobile=true`
 - NOAA / NYC Topobathy LiDAR 2017 bulk index:
