@@ -54,7 +54,9 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _building_faces(feature: models.BuildingFeature) -> list[list[tuple[float, float, float]]]:
+def _building_faces(
+    feature: models.BuildingFeature,
+) -> list[list[tuple[float, float, float]]]:
     ring = feature.footprint_4326[:-1]
     if len(ring) < 3:
         return []
@@ -164,7 +166,9 @@ def main() -> None:
     print(f"CityGML source: {manifest.citygml_source}")
     print(f"Wrote {geoparquet_path}")
     if report_file is None:
-        print("Skipped tracked report generation. Re-run with --publish-report to update reports/.")
+        print(
+            "Skipped tracked report generation. Re-run with --publish-report to update reports/."
+        )
     else:
         print(f"Wrote tracked report: {report_file}")
 

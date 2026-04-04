@@ -37,7 +37,9 @@ def test_cli_export_geojson_with_bbox(
     assert output_path.exists()
 
 
-def test_cli_export_geoparquet(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+def test_cli_export_geoparquet(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     output_path = tmp_path / "buildings.parquet"
     exit_code = main(
         [

@@ -107,7 +107,9 @@ def main() -> None:
     print(f"Wrote {geojson_path}")
     print(f"Wrote {geoparquet_path}")
     if report_file is None:
-        print("Skipped tracked report generation. Re-run with --publish-report to update reports/.")
+        print(
+            "Skipped tracked report generation. Re-run with --publish-report to update reports/."
+        )
     else:
         print(f"Wrote tracked report: {report_file}")
 

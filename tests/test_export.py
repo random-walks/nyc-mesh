@@ -52,7 +52,9 @@ def test_export_gltf_accepts_terrain_mesh(tmp_path: Path) -> None:
     write_dem_json(dem_path)
     mesh = analysis.generate_terrain_mesh(load_dem(dem_path))
 
-    gltf_path = export.export_gltf(mesh, ExportTarget("gltf", tmp_path / "terrain.gltf"))
+    gltf_path = export.export_gltf(
+        mesh, ExportTarget("gltf", tmp_path / "terrain.gltf")
+    )
     gltf_payload = json.loads(gltf_path.read_text(encoding="utf-8"))
 
     assert gltf_payload["asset"]["generator"] == "nyc-mesh"

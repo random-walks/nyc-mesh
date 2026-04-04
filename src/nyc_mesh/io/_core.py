@@ -184,7 +184,8 @@ def load_citygml(source: str | Path) -> CityGMLDataset:
             continue
         buildings.append(
             CityGMLBuilding(
-                building_id=building_node.get(_GML_ID) or f"building-{len(buildings) + 1}",
+                building_id=building_node.get(_GML_ID)
+                or f"building-{len(buildings) + 1}",
                 footprint_2263=footprint_2263,
                 measured_height=_extract_measured_height(building_node),
             )
@@ -216,7 +217,9 @@ def _load_xyz_text(source_path: Path) -> tuple[LidarPoint, ...]:
         parts = line.replace(",", " ").split()
         if len(parts) < 3:
             continue
-        points.append(LidarPoint(x=float(parts[0]), y=float(parts[1]), z=float(parts[2])))
+        points.append(
+            LidarPoint(x=float(parts[0]), y=float(parts[1]), z=float(parts[2]))
+        )
     return tuple(points)
 
 
@@ -231,7 +234,9 @@ def load_lidar(source: str | Path) -> LidarDataset:
     suffix = source_path.suffix.lower()
     if suffix == ".zip":
         if laspy is None:
-            message = "ZIP-wrapped LAS/LAZ loading requires the optional `laspy` dependency."
+            message = (
+                "ZIP-wrapped LAS/LAZ loading requires the optional `laspy` dependency."
+            )
             raise RuntimeError(message)
         _, member_bytes = _zip_members(source_path, suffixes=(".las", ".laz"))
         las = laspy.read(BytesIO(member_bytes))
@@ -282,7 +287,9 @@ def load_lidar(source: str | Path) -> LidarDataset:
                 x=float(point["x"]),
                 y=float(point["y"]),
                 z=float(point["z"]),
-                intensity=None if point.get("intensity") is None else int(point["intensity"]),
+                intensity=None
+                if point.get("intensity") is None
+                else int(point["intensity"]),
             )
             for point in raw_points
             if isinstance(point, dict)
@@ -303,11 +310,15 @@ def load_dem(source: str | Path) -> DEMDataset:
 
     suffix = source_path.suffix.lower()
     if suffix == ".zip":
-        member_name, member_bytes = _zip_members(source_path, suffixes=(".tif", ".tiff", ".asc"))
+        member_name, member_bytes = _zip_members(
+            source_path, suffixes=(".tif", ".tiff", ".asc")
+        )
         member_suffix = Path(member_name).suffix.lower()
         if member_suffix in {".tif", ".tiff"}:
             if rasterio is None or MemoryFile is None:
-                message = "GeoTIFF DEM loading requires the optional `rasterio` dependency."
+                message = (
+                    "GeoTIFF DEM loading requires the optional `rasterio` dependency."
+                )
                 raise RuntimeError(message)
             with MemoryFile(member_bytes) as memory_file, memory_file.open() as dataset:
                 return _dem_from_rasterio(dataset, source_path)
@@ -381,7 +392,9 @@ def _dem_from_rasterio(dataset: Any, source_path: Path) -> DEMDataset:
     nodata = dataset.nodata
     values = tuple(
         tuple(
-            None if nodata is not None and float(value) == float(nodata) else float(value)
+            None
+            if nodata is not None and float(value) == float(nodata)
+            else float(value)
             for value in row
         )
         for row in band
@@ -425,7 +438,9 @@ def _coerce_geojson_footprint(geometry: dict[str, Any]) -> tuple[Coordinate2D, .
         first_polygon = coordinates[0]
         if isinstance(first_polygon, list) and first_polygon:
             first_ring = first_polygon[0]
-            return _coerce_geojson_ring(first_ring) if isinstance(first_ring, list) else ()
+            return (
+                _coerce_geojson_ring(first_ring) if isinstance(first_ring, list) else ()
+            )
     return ()
 
 
@@ -479,7 +494,9 @@ def load_footprints(source: str | Path) -> FootprintDataset:
             message = "Shapefile loading requires the optional `pyshp` dependency."
             raise RuntimeError(message)
         reader = shapefile.Reader(str(source_path))
-        field_names = [field[0] for field in reader.fields if field[0] != "DeletionFlag"]
+        field_names = [
+            field[0] for field in reader.fields if field[0] != "DeletionFlag"
+        ]
         loaded = []
         for index, shape_record in enumerate(reader.iterShapeRecords(), start=1):
             if shape_record.shape.shapeTypeName not in {"POLYGON", "POLYGONZ"}:
@@ -490,7 +507,10 @@ def load_footprints(source: str | Path) -> FootprintDataset:
                 if isinstance(value, (str, int, float)) or value is None
             }
             ring = normalise_ring(
-                tuple((float(point[0]), float(point[1])) for point in shape_record.shape.points)
+                tuple(
+                    (float(point[0]), float(point[1]))
+                    for point in shape_record.shape.points
+                )
             )
             if not ring:
                 continue

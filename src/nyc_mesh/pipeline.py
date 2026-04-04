@@ -213,9 +213,13 @@ def build_study_area_manifest(
         "footprints_source": None
         if manifest.footprints_source is None
         else str(manifest.footprints_source),
-        "pluto_source": None if manifest.pluto_source is None else str(manifest.pluto_source),
+        "pluto_source": None
+        if manifest.pluto_source is None
+        else str(manifest.pluto_source),
         "dem_source": None if manifest.dem_source is None else str(manifest.dem_source),
-        "lidar_source": None if manifest.lidar_source is None else str(manifest.lidar_source),
+        "lidar_source": None
+        if manifest.lidar_source is None
+        else str(manifest.lidar_source),
         "sources": [
             {
                 "name": item.name,
@@ -268,5 +272,7 @@ def export_citygml_geoparquet(
     """Run the CityGML happy path and write GeoParquet."""
 
     buildings = extract_citygml_buildings(source, bbox=bbox)
-    target = ExportTarget(format="geoparquet", output_path=Path(output_path).expanduser())
+    target = ExportTarget(
+        format="geoparquet", output_path=Path(output_path).expanduser()
+    )
     return export_geoparquet(buildings, target)

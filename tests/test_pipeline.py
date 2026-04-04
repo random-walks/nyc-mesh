@@ -29,7 +29,9 @@ def test_pipeline_helpers_export_geojson_and_geoparquet(tmp_path: Path) -> None:
     )
 
     geojson_payload = json.loads(geojson_path.read_text(encoding="utf-8"))
-    assert [feature["id"] for feature in geojson_payload["features"]] == ["building-inside"]
+    assert [feature["id"] for feature in geojson_payload["features"]] == [
+        "building-inside"
+    ]
 
     parquet_table = pq.read_table(geoparquet_path)
     assert parquet_table.num_rows == 2

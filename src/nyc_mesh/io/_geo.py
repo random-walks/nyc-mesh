@@ -90,7 +90,9 @@ def point_in_polygon(point: Coordinate2D, ring: tuple[Coordinate2D, ...]) -> boo
     return inside
 
 
-def region_from_bounds(bounds: BoundingBox, *, min_height: float, max_height: float) -> list[float]:
+def region_from_bounds(
+    bounds: BoundingBox, *, min_height: float, max_height: float
+) -> list[float]:
     """Return a Cesium region array for a WGS84 bounding box."""
 
     return [

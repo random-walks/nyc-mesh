@@ -63,7 +63,7 @@ def write_report(
 
 - Study area: `{study_area}`
 - Height-aware buildings exported: {building_count}
-- Terrain source: `{terrain_source or 'none supplied'}`
+- Terrain source: `{terrain_source or "none supplied"}`
 
 ## Artifacts
 
@@ -116,7 +116,9 @@ def main() -> None:
         )
         terrain_source_label = manifest.dem_source.name
     elif manifest.lidar_source is not None:
-        terrain_mesh = analysis.generate_terrain_mesh(io.load_lidar(manifest.lidar_source))
+        terrain_mesh = analysis.generate_terrain_mesh(
+            io.load_lidar(manifest.lidar_source)
+        )
         export.export_gltf(
             terrain_mesh,
             models.ExportTarget("gltf", artifact_path("terrain.gltf")),
@@ -144,7 +146,9 @@ def main() -> None:
     print(f"Wrote {gltf_path}")
     print(f"Wrote {tileset_path}")
     if report_file is None:
-        print("Skipped tracked report generation. Re-run with --publish-report to update reports/.")
+        print(
+            "Skipped tracked report generation. Re-run with --publish-report to update reports/."
+        )
     else:
         print(f"Wrote tracked report: {report_file}")
 

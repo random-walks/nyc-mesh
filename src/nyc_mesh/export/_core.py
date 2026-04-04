@@ -63,7 +63,10 @@ def export_geojson(data: tuple[BuildingFeature, ...], target: ExportTarget) -> P
                 "geometry": {
                     "type": "Polygon",
                     "coordinates": [
-                        [[longitude, latitude] for longitude, latitude in feature.footprint_4326]
+                        [
+                            [longitude, latitude]
+                            for longitude, latitude in feature.footprint_4326
+                        ]
                     ],
                 },
             }
@@ -92,10 +95,14 @@ def export_geoparquet(data: tuple[BuildingFeature, ...], target: ExportTarget) -
         message = "GeoParquet export requires the optional `pyarrow` dependency."
         raise RuntimeError(message)
 
-    output_path = _validate_target_format(target, expected_formats=("parquet", "geoparquet"))
+    output_path = _validate_target_format(
+        target, expected_formats=("parquet", "geoparquet")
+    )
     building_ids = [feature.building_id for feature in data]
     heights = [feature.height for feature in data]
-    properties_json = [json.dumps(feature.properties, sort_keys=True) for feature in data]
+    properties_json = [
+        json.dumps(feature.properties, sort_keys=True) for feature in data
+    ]
     geometries = [_polygon_to_wkb(feature.footprint_4326) for feature in data]
     table = pa.table(
         {
@@ -139,7 +146,9 @@ def _local_xy(
     return (x_coord, y_coord)
 
 
-def _building_mesh(data: tuple[BuildingFeature, ...]) -> tuple[list[tuple[float, float, float]], list[int]]:
+def _building_mesh(
+    data: tuple[BuildingFeature, ...],
+) -> tuple[list[tuple[float, float, float]], list[int]]:
     if not data:
         return ([], [])
     origin_lon, origin_lat = data[0].centroid
@@ -187,7 +196,9 @@ def _building_mesh(data: tuple[BuildingFeature, ...]) -> tuple[list[tuple[float,
     return (vertices, indices)
 
 
-def _terrain_mesh(data: TerrainMeshDataset) -> tuple[list[tuple[float, float, float]], list[int]]:
+def _terrain_mesh(
+    data: TerrainMeshDataset,
+) -> tuple[list[tuple[float, float, float]], list[int]]:
     vertices = list(data.vertices)
     indices = [index for triangle in data.triangles for index in triangle]
     return (vertices, indices)
@@ -204,9 +215,9 @@ def _build_gltf_json(
     position_blob = b"".join(struct.pack("<fff", *vertex) for vertex in vertices)
     index_blob = b"".join(struct.pack("<I", index) for index in indices)
     buffer_blob = position_blob + index_blob
-    uri = "data:application/octet-stream;base64," + base64.b64encode(buffer_blob).decode(
-        "ascii"
-    )
+    uri = "data:application/octet-stream;base64," + base64.b64encode(
+        buffer_blob
+    ).decode("ascii")
     mins = [min(vertex[axis] for vertex in vertices) for axis in range(3)]
     maxs = [max(vertex[axis] for vertex in vertices) for axis in range(3)]
 
@@ -214,7 +225,12 @@ def _build_gltf_json(
         "asset": {"version": "2.0", "generator": "nyc-mesh"},
         "buffers": [{"byteLength": len(buffer_blob), "uri": uri}],
         "bufferViews": [
-            {"buffer": 0, "byteOffset": 0, "byteLength": len(position_blob), "target": 34962},
+            {
+                "buffer": 0,
+                "byteOffset": 0,
+                "byteLength": len(position_blob),
+                "target": 34962,
+            },
             {
                 "buffer": 0,
                 "byteOffset": len(position_blob),

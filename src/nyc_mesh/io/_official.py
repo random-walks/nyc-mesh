@@ -12,10 +12,14 @@ from urllib.request import urlopen
 from ..models import BoundingBox, DataSourceMetadata, StudyAreaAssetManifest
 
 NYC_CITYGML_ARCHIVE_URL = "https://maps.nyc.gov/download/3dmodel/DA_WISE_GML.zip"
-NYC_BUILDING_FOOTPRINTS_API_URL = "https://data.cityofnewyork.us/resource/5zhs-2jue.json"
+NYC_BUILDING_FOOTPRINTS_API_URL = (
+    "https://data.cityofnewyork.us/resource/5zhs-2jue.json"
+)
 NYC_PLUTO_API_URL = "https://data.cityofnewyork.us/resource/64uk-42ks.json"
 NYC_DEM_DATASET_URL = "https://data.cityofnewyork.us/City-Government/1-foot-Digital-Elevation-Model-DEM-/dpc8-z3jc/data?no_mobile=true"
-NYC_LIDAR_DATASET_URL = "https://noaa-nos-coastal-lidar-pds.s3.amazonaws.com/laz/geoid18/9306/index.html"
+NYC_LIDAR_DATASET_URL = (
+    "https://noaa-nos-coastal-lidar-pds.s3.amazonaws.com/laz/geoid18/9306/index.html"
+)
 
 
 def _read_json(url: str) -> list[dict[str, Any]]:

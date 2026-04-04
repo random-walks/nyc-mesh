@@ -10,7 +10,11 @@ from typing import TYPE_CHECKING, TextIO, cast
 from lxml import etree
 
 from ..models import BoundingBox
-from ..pipeline import export_citygml_geojson, export_citygml_geoparquet, extract_citygml_buildings
+from ..pipeline import (
+    export_citygml_geojson,
+    export_citygml_geoparquet,
+    extract_citygml_buildings,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
@@ -56,7 +60,11 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.required = True
 
     for command_name, help_text, output_flag in (
-        ("export-geojson", "Export the CityGML happy path to GeoJSON.", _run_export_geojson),
+        (
+            "export-geojson",
+            "Export the CityGML happy path to GeoJSON.",
+            _run_export_geojson,
+        ),
         (
             "export-geoparquet",
             "Export the CityGML happy path to GeoParquet.",
@@ -137,6 +145,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         return handler(args)
     except SystemExit as exc:
         return exc.code if isinstance(exc.code, int) else 1
-    except (etree.XMLSyntaxError, FileNotFoundError, OSError, RuntimeError, ValueError) as exc:
+    except (
+        etree.XMLSyntaxError,
+        FileNotFoundError,
+        OSError,
+        RuntimeError,
+        ValueError,
+    ) as exc:
         _write_line(sys.stderr, f"nyc-mesh: error: {exc}")
         return 1

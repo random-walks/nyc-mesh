@@ -31,7 +31,10 @@ def write_footprints_geojson(path: Path) -> None:
                 "geometry": {
                     "type": "Polygon",
                     "coordinates": [
-                        [[longitude, latitude] for longitude, latitude in feature.footprint_4326]
+                        [
+                            [longitude, latitude]
+                            for longitude, latitude in feature.footprint_4326
+                        ]
                     ],
                 },
             }
